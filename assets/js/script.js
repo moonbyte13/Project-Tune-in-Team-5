@@ -1,3 +1,5 @@
+let languageSelected
+
 $( function() {
   $( "#vSlider" ).slider();
 } );
@@ -70,13 +72,20 @@ function radioTest(url){
   })
   .then(response => response.json())
   .then(data => {
-    // console.log(data)
+    
+    console.log(data[randomNum(data.length)])
   })
+}
+
+function randomNum(length){
+  return Math.floor(Math.random()*length)
 }
 
 get_radiobrowser_base_url_random().then((x)=>{
   console.log("-",x);
-  radioTest(x);
+  // let url = `${x}/json/stations/bylanguage/${languageSelected}`
+  let url = `${x}/json/stations/bylanguage/english`
+  radioTest(url);
   return get_radiobrowser_server_config(x);
 }).then(config=>{
   console.log("config:",config);
