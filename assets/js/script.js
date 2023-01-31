@@ -16,14 +16,15 @@ So we have to fallback to ask a single server for a list.
 /**
  * Ask a specified server for a list of all other server.
  */
-/* function get_radiobrowser_base_urls() {
+function get_radiobrowser_base_urls() {
   return new Promise((resolve, reject)=>{
       var request = new XMLHttpRequest()
       // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
-      request.open('GET', 'https://all.api.radio-browser.info/json/servers', true);
+      request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
       request.onload = function() {
           if (request.status >= 200 && request.status < 300){
               var items = JSON.parse(request.responseText).map(x=>"https://" + x.name);
+              console.log(items)
               resolve(items);
           }else{
               reject(request.statusText);
@@ -31,12 +32,12 @@ So we have to fallback to ask a single server for a list.
       }
       request.send();
   });
-} */
+}
 
 /**
 * Ask a server for its settings.
 */
-/* function get_radiobrowser_server_config(baseurl) {
+function get_radiobrowser_server_config(baseurl) {
   return new Promise((resolve, reject)=>{
       var request = new XMLHttpRequest()
       request.open('GET', baseurl + '/json/config', true);
@@ -50,22 +51,33 @@ So we have to fallback to ask a single server for a list.
       }
       request.send();
   });
-} */
+}
 
 /**
 * Get a random available radio-browser server.
 * Returns: string - base url for radio-browser api
 */
-/* function get_radiobrowser_base_url_random() {
+function get_radiobrowser_base_url_random() {
   return get_radiobrowser_base_urls().then(hosts => {
       var item = hosts[Math.floor(Math.random() * hosts.length)];
       return item;
   });
 }
- */
-/* get_radiobrowser_base_url_random().then((x)=>{
+
+function radioTest(url){
+  fetch(url, {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    // console.log(data)
+  })
+}
+
+get_radiobrowser_base_url_random().then((x)=>{
   console.log("-",x);
+  radioTest(x);
   return get_radiobrowser_server_config(x);
 }).then(config=>{
   console.log("config:",config);
-}); */
+});
