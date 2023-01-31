@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- JqueryUi stylesheet -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <title>Document</title>
+</head>
+<body>
+  <!-- Header container -->
+  <header class='columns-2'>
+    <!-- Song Title: column 1 -->
+    <h1 id='songTitle' class='w-full'>Song title</h1>
+    <!-- Navbar: column 2 -->
+    <nav class='columns-4'>
+      <!-- Search Bar -->
+      <input type="text" placeholder='Search' class='w-full'>
+      <!-- Trending Radios -->
+      <h1 id='trending'></h1>
+      <!-- Hamburger Menu -->
+      <ul id="menu">
+        <li><div>Books</div></li>
+        <li><div>Clothing</div></li>
+        <li><div>Electronics</div></li>
+        <li><div>Movies</div></li>
+        <li><div>Music</div></li>
+      </ul> 
+    </nav>
+  </header>
+  <!-- Main container -->
+  <main class='columns-2'>
+    <!-- Artist: column 1-->
+    <div id="artist">
+      <!-- Artist name -->
+      <h2 id="artistName"></h2>
+      <!-- Artist img and bio -->
+      <div id="artistInfo">
+        <!-- <img> <p> -->
+      </div>
+    </div>
+    <!-- Song lyrics: column 2 -->
+    <div id="lyrics"></div>
+  </main>
+  <!-- Footer container -->
+  <footer class='columns-3'>
+    <!-- Volume slider: column 1 -->
+    <div id="vSlider"></div>
+    <!-- Media buttons: column 2 -->
+    <div id='mediaBtns' class='columns-5'>
+      <button id='shuffleBtn'></button>
+      <button id='seekBackBtn'></button>
+      <button id='playBtn'></button>
+      <button id='seekFwdBtn'></button>
+      <button id='loopBtn'></button>
+    </div>
+    <!-- Track slider: column 3 -->
+    <div id="tSlider"></div>
+  </footer>
+  <!-- Tailwind script -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <script src='./assets/js/tailwind.config.js'></script>
+  <!-- Jquery script -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <!-- JqueryUi script -->
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <!-- Custom script -->
+  <script src="./assets/js/script.js"></script>
+</body>
+</html>
