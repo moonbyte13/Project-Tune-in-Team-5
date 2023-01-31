@@ -1,5 +1,5 @@
 
-body {
+body{
 
 }
 
@@ -14,3 +14,9 @@ header{
     font-style: italic;
     padding: 25px; 
     font-size: 35px;
+}
+
+#audio{
+    position: fixed;
+    bottom: 0;
+}
