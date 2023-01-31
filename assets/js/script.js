@@ -1,4 +1,4 @@
-let languageSelected
+let languageSelected;
 
 $( function() {
   $( "#vSlider" ).slider();
@@ -89,8 +89,18 @@ get_radiobrowser_base_url_random().then((x)=>{
   return get_radiobrowser_server_config(x);
 }).then(config=>{
   console.log("config:",config);
-<<<<<<< HEAD
-}); */
-=======
 });
->>>>>>> ff469954d0a7a32f34f97b86a0bca508bb6fe175
+
+let CLIENT_ACCESS_TOKEN="FAjebKEerAjr6h1q-cwY-KD44Xe82gXdu9jgUGzvEDUa7lWfwudxpiTmHzb-KiDO";
+let endpoint = "search";
+let query = "queen";
+// get /songs/:id
+// get /artists/:id
+// get /search?q=
+// get referents //
+
+fetch(`https://api.genius.com/${endpoint}?q=${query}&access_token=${CLIENT_ACCESS_TOKEN}`)
+  
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
