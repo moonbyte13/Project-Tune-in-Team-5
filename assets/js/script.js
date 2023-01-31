@@ -26,7 +26,7 @@ function get_radiobrowser_base_urls() {
       request.onload = function() {
           if (request.status >= 200 && request.status < 300){
               var items = JSON.parse(request.responseText).map(x=>"https://" + x.name);
-              console.log(items)
+              console.log('server list:', items)
               resolve(items);
           }else{
               reject(request.statusText);
@@ -76,46 +76,15 @@ function radioTest(url){
     $('#audio').attr('src', data[ranRadio].url)
     console.log('radio obj:', data[ranRadio])
     console.log('homepage:', data[ranRadio].homepage)
-    shazam(data[ranRadio].url);
   })
 }
-
-function shazam(audioUrl){
-  const options = {
-    method: 'POST',
-    headers: {
-      'content-type': 'text/plain',
-      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
-      'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
-    },
-    body: audioUrl
-  };
-  let url = 'https://shazam.p.rapidapi.com/songs/detect'
-  fetch(url , options)
-    .then(response => response.json())
-    .then(data => console.log('Shazam:', data))
-    .catch(err => console.error(err));
-}
-
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
-		'X-RapidAPI-Host': '30-000-radio-stations-and-music-charts.p.rapidapi.com'
-	}
-};
-
-fetch('https://30-000-radio-stations-and-music-charts.p.rapidapi.com/rapidapi?id=%7Bid%7D', options)
-	.then(response => response.json())
-	.then(response => console.log(response))
-	.catch(err => console.error(err));
 
 function randomNum(length){
   return Math.floor(Math.random()*length)
 }
 
 get_radiobrowser_base_url_random().then((x)=>{
-  console.log("-",x);
+  console.log("server selected:",x);
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   let url = `${x}/json/stations/bylanguage/english`
   radioTest(url);
