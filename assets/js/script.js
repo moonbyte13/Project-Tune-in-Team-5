@@ -72,7 +72,7 @@ function radioTest(url){
   })
   .then(response => response.json())
   .then(data => {
-    
+    $('#audio').attr('src', data[randomNum(data.length)].url)
     console.log(data[randomNum(data.length)])
   })
 }
