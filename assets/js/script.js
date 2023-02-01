@@ -1,7 +1,8 @@
 let languageSelected,
 url,
 billboardList,
-genreUrl
+genreUrl,
+selectedCountry
 
 let radioData
 
@@ -273,7 +274,16 @@ window.onload = function () {
     option.text = country.name;
     select.appendChild(option);
   });
-
+  
+  select.onchange = (ev) =>{
+    console.log("Selected country is: " + select.value);
+    selectedCountry = select.value
+  }
+  /* option.addEventListener('click', function(){
+    selectedCountry =  option;
+    console.log(selectedCountry)
+  }) */
+  
   const checkboxesContainer = document.querySelector('#musicGenres');
   // populates the modal with each genre
   musicGenres.forEach(genre => {
@@ -293,14 +303,15 @@ window.onload = function () {
   modal.style.display = "block";
 }
 
-// close the modal
+// closebtn
 const closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
-  console.log("Fetching radio station by filters");
-  fetchRadioStations();
+  // console.log("Fetching radio station by filters");
+  // fetchRadioStations();
   modal.style.display = "none";
-  console.log(selectedGenres);
+  // console.log(selectedGenres);
 });
+
 
 // updating radio stations based on genre
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
@@ -331,8 +342,6 @@ const fetchRadioStations = () => {
       console.log("selected genres", selectedGenres);
     });
 };
-
-
 
 
 /*
@@ -410,6 +419,7 @@ function radio(url) {
         displayRadioInfo()
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
+
       }
     })
 }
