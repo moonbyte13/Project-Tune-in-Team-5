@@ -2,10 +2,23 @@
 /* body {
 
 } */
+header{
+    background-color: rgba(16, 16, 16, 0.96);
+    position: relative;
+}
+
+#billboard{
+   top: 4px;
+}
 
 #navbar-default{
     float:right; 
 }
+
+#clock{
+   left: 20%;
+}
+
 
 /* header{
     display: flex; 
