@@ -3,6 +3,10 @@
 
 } */
 
+#navbar-default{
+    float:right; 
+}
+
 /* header{
     display: flex; 
     background-color: dodgerblue;
