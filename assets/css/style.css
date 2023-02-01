@@ -48,19 +48,10 @@ footer{
     width: 100%;
 }
 
-#billboard{
-    float: right;
-    width: 40%;
-}
-
-#leftCon{
-    width: 100%;
-}
-
 #audio{
     width: 50%;
 }
 
-#radioInfo{
-    width: 50%;
+#billboard{
+    margin-bottom: 75px;
 }

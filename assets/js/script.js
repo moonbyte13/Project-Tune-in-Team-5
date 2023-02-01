@@ -389,7 +389,7 @@ function billboard() {
   fetch(billUrl, {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
+      'X-RapidAPI-Key': 'c940ff86e8msh1858db2844899cap1b62d9jsn957e8cb7460b',
       'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
     }
   })
