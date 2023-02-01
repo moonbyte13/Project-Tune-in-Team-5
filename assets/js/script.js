@@ -359,7 +359,7 @@ function get_radiobrowser_base_url_random() {
   });
 }
 
-function radioTest(url) {
+function radio(url) {
   fetch(url, {
     method: 'GET',
   })
@@ -378,7 +378,7 @@ function radioTest(url) {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
       }
     })
-} // radioTest(url)
+}
 
 function billboard() {
   let day = now.format('DD')
@@ -432,7 +432,7 @@ get_radiobrowser_base_url_random().then((x) => {
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
   url = `${x}/json/stations/bylanguage/english`
-  radioTest(url);
+  radio(url);
   return get_radiobrowser_server_config(x);
 }).then(config => {
   console.log("config:", config);
@@ -442,7 +442,7 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  (radioTest(url));
+  (radio(url));
 });
 
 setInterval(function () {
@@ -453,7 +453,7 @@ setInterval(function () {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#randomBtn").click(function () {
-  radioTest(url);
+  radio(url);
 });
 
 billboard()
