@@ -2,6 +2,8 @@ let languageSelected,
 url,
 billboardList
 
+let radioData
+
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
 dayjs.locale(locale, null, true); // load locale for later use
@@ -366,9 +368,12 @@ function radioTest(url) {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
       if (selectedRadio.ssl_error === 0) {
-      $('#audio').attr('src', data[ranRadio].url)
-      console.log('radio obj:', data[ranRadio])
-      console.log('homepage:', data[ranRadio].homepage)
+        $('#audio').attr('src', data[ranRadio].url)
+        console.log('radio obj:', data[ranRadio])
+        console.log('homepage:', data[ranRadio].homepage)
+        radioData = data[ranRadio]
+        console.log(radioData)
+        displayRadioInfo()
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
       }
@@ -394,7 +399,8 @@ function billboard() {
       billboardList = data
       for(let i=0; i<billboardList.length; i++){
         $('#billboard').append(
-          `<li>${billboardList[i].rank}. 
+          `<li>
+            ${billboardList[i].rank}. 
             ${billboardList[i].artist} | 
             Song: ${billboardList[i].title}
           </li>`
@@ -405,6 +411,17 @@ function billboard() {
     .catch(err => console.error(err));
 }
 
+
+function displayRadioInfo() {
+  $('#radioInfo').html(
+    `<img src='${radioData.favicon}' style='width: 25%'></img>
+    <li>${radioData.name}</li>
+    <li>${radioData.country}</li>
+    <li>Language: ${radioData.language}</li>
+    <li>Tags: "${radioData.tags}"</li>
+    <li>Votes: ${radioData.votes}</li>`
+  )
+}
 
 function randomNum(length) {
   return Math.floor(Math.random() * length)
