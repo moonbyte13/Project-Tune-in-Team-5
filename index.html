@@ -76,21 +76,20 @@
     </nav>
   </header>
   <!-- Main container -->
-  <main>
-    
+  <main class='flex justify-center'>
+    <label id='clock' class='text-5xl'></label>
   </main>
   <!-- Footer container -->
-  <footer class='columns-3'>
-    <!-- Volume slider: column 1 -->
-    <!-- <div id="vSlider"></div> -->
-    <!-- Media buttons: column 2 -->
-    <audio autoplay type='audio/mpeg' id='audio'>
-      <button>ran</button>
+  <footer class='flex justify-center'>
+    <button id='ranBtn' class="bg-stone-500 hover:bg-stone-700 text-white font-bold py-2 px-4 rounded">
+      Random
+    </button>
+    <!-- Media buttons -->
+    <audio autoplay controls muted id='audio' type='audio/mpeg' class="fill-blue-500" data-state="hidden">
     </audio>
-    
-    <!-- Track slider: column 3 -->
-    <!-- <div id="tSlider"></div> -->
   </footer>
+  <!-- Dayjs script -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <!-- Tailwind script -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Jquery script -->

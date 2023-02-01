@@ -1,4 +1,11 @@
-let languageSelected
+let languageSelected,
+url
+
+// Defining day.js locale obj
+const locale = {}; // Your Day.js locale Object.
+dayjs.locale(locale, null, true); // load locale for later use
+
+let now = dayjs()
 
 $( function() {
   $( "#vSlider" ).slider();
@@ -86,9 +93,21 @@ function randomNum(length){
 get_radiobrowser_base_url_random().then((x)=>{
   console.log("server selected:",x);
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
-  let url = `${x}/json/stations/bylanguage/english`
+  // url = `${x}/json/tags`
+  url = `${x}/json/stations/bylanguage/english`
   radioTest(url);
   return get_radiobrowser_server_config(x);
 }).then(config=>{
   console.log("config:", config);
 });
+
+// adds click function on randomBtn
+// Generates a random radio station
+$("#ranBtn").click(function() {
+  (radioTest(url));
+});
+
+setInterval(function () {
+  $('#clock').text(dayjs().format('hh:mm:ss a'))
+  // console.log(dayjs().format('hh:mm:ss a'))
+}, 1000);
