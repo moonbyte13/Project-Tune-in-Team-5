@@ -2,6 +2,8 @@ let languageSelected,
 url,
 billboardList
 
+let radioData
+
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
 dayjs.locale(locale, null, true); // load locale for later use
@@ -390,7 +392,7 @@ function get_radiobrowser_base_url_random() {
   });
 }
 
-function radioTest(url) {
+function radio(url) {
   fetch(url, {
     method: 'GET',
   })
@@ -399,25 +401,28 @@ function radioTest(url) {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
       if (selectedRadio.ssl_error === 0) {
-      $('#audio').attr('src', data[ranRadio].url)
-      console.log('radio obj:', data[ranRadio])
-      console.log('homepage:', data[ranRadio].homepage)
+        $('#audio').attr('src', data[ranRadio].url)
+        console.log('radio obj:', data[ranRadio])
+        console.log('homepage:', data[ranRadio].homepage)
+        radioData = data[ranRadio]
+        console.log(radioData)
+        displayRadioInfo()
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
       }
     })
-} // radioTest(url)
+}
 
 function billboard() {
   let day = now.format('DD')
   let month = now.format('MM')
   let year = now.format('YYYY')
-  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-10`
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-100`
 
   fetch(billUrl, {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
+      'X-RapidAPI-Key': 'c940ff86e8msh1858db2844899cap1b62d9jsn957e8cb7460b',
       'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
     }
   })
@@ -427,7 +432,8 @@ function billboard() {
       billboardList = data
       for(let i=0; i<billboardList.length; i++){
         $('#billboard').append(
-          `<li>${billboardList[i].rank}. 
+          `<li>
+            ${billboardList[i].rank}. 
             ${billboardList[i].artist} | 
             Song: ${billboardList[i].title}
           </li>`
@@ -438,6 +444,17 @@ function billboard() {
     .catch(err => console.error(err));
 }
 
+
+function displayRadioInfo() {
+  $('#radioInfo').html(
+    `<img src='${radioData.favicon}' style='width: 25%'></img>
+    <li>${radioData.name}</li>
+    <li>${radioData.country}</li>
+    <li>Language: ${radioData.language}</li>
+    <li>Tags: "${radioData.tags}"</li>
+    <li>Votes: ${radioData.votes}</li>`
+  )
+}
 
 function randomNum(length) {
   return Math.floor(Math.random() * length);
@@ -450,7 +467,7 @@ get_radiobrowser_base_url_random().then((x) => {
   // url = `${x}/json/stations/bytag/${blues}`
 
   url = `${x}/json/stations/bylanguage/english`
-  radioTest(url);
+  radio(url);
   return get_radiobrowser_server_config(x);
 }).then(config => {
   console.log("config:", config);
@@ -460,7 +477,7 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  // (radioTest(url));
+  // (radio(url));
   fetchRadioStations();
 });
 
@@ -469,5 +486,10 @@ setInterval(function () {
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
 
+// adds click function on randomBtn
+// Generates a random radio station
+$("#randomBtn").click(function () {
+  radio(url);
+});
 
 billboard();
