@@ -83,7 +83,25 @@ function radioTest(url){
     $('#audio').attr('src', data[ranRadio].url)
     console.log('radio obj:', data[ranRadio])
     console.log('homepage:', data[ranRadio].homepage)
+    billboardGet()
   })
+}
+
+function billboardGet(){
+  let year = dayjs().format('YYYY')
+  let month = dayjs().format('MM')
+  let day = dayjs().format('DD')
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-10`
+  fetch(billUrl, {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
+      'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
+    }
+  })
+    .then(response => response.json())
+    .then(data => console.log('Billboard:', data))
+    .catch(err => console.error(err));
 }
 
 function randomNum(length){
@@ -100,6 +118,7 @@ get_radiobrowser_base_url_random().then((x)=>{
 }).then(config=>{
   console.log("config:", config);
 });
+
 
 // adds click function on randomBtn
 // Generates a random radio station
