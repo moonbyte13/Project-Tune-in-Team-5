@@ -8,9 +8,6 @@ dayjs.locale(locale, null, true); // load locale for later use
 
 let now = dayjs()
 
-
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
-
 const countries = [
   { code: 'AF', name: 'Afghanistan' },
   { code: 'AL', name: 'Albania' },
@@ -281,6 +278,7 @@ window.onload = function () {
     checkbox.type = 'checkbox';
     checkbox.value = genre;
     checkbox.id = genre;
+    checkbox.addEventListener('change', updateSelectedGenres);
 
     const label = document.createElement('label');
     label.htmlFor = genre;
@@ -295,8 +293,43 @@ window.onload = function () {
 // close the modal
 const closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
+  console.log("Fetching radio station by filters");
+  fetchRadioStations();
   modal.style.display = "none";
+  console.log(selectedGenres);
 });
+
+// updating radio stations based on genre
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
+
+let selectedGenres = [];
+
+const updateSelectedGenres = (event) => {
+  if (event.target.checked) {
+    selectedGenres.push(event.target.value);
+  } else {
+    selectedGenres = selectedGenres.filter(genre => genre !== event.target.value);
+  }
+};
+  // url = `${x}/json/stations/bytag/${blues}`
+const fetchRadioStations = () => {
+  const genreFilters = selectedGenres.join('/');
+  let toLowerCaseGenreFilters = genreFilters.toLowerCase();
+  url = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
+  console.log("logging url of fetch", url);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      console.log("fetching by genres", data);
+      const radioStations = data.filter(station => {
+        return selectedGenres.some(genre => new RegExp(genre, 'i').test(station.tags));
+      });
+      console.log("filtered radio stations", radioStations);
+      console.log("selected genres", selectedGenres);
+    });
+};
+
+
 
 
 /*
@@ -407,13 +440,15 @@ function billboard() {
 
 
 function randomNum(length) {
-  return Math.floor(Math.random() * length)
+  return Math.floor(Math.random() * length);
 }
 
 get_radiobrowser_base_url_random().then((x) => {
   console.log("server selected:", x);
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
+  // url = `${x}/json/stations/bytag/${blues}`
+
   url = `${x}/json/stations/bylanguage/english`
   radioTest(url);
   return get_radiobrowser_server_config(x);
@@ -425,7 +460,8 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  (radioTest(url));
+  // (radioTest(url));
+  fetchRadioStations();
 });
 
 setInterval(function () {
@@ -433,10 +469,5 @@ setInterval(function () {
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
 
-// adds click function on randomBtn
-// Generates a random radio station
-$("#randomBtn").click(function () {
-  radioTest(url);
-});
 
-billboard()
+billboard();
