@@ -1,6 +1,7 @@
-const select = document.getElementById("countrySelect");
 let languageSelected;
 let url;
+
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
 
 const countries = [
   { code: 'AF', name: 'Afghanistan' },
@@ -253,6 +254,10 @@ const countries = [
   { code: 'ZW', name: 'Zimbabwe' },
   { code: 'AX', name: 'Åland Islands' }
 ]
+
+// Modal Creation 
+const modal = document.getElementById('modal');
+const select = document.getElementById("countrySelect");
 // populates the modal with each country
 countries.forEach(country => {
   const option = document.createElement("option");
@@ -261,15 +266,23 @@ countries.forEach(country => {
   select.appendChild(option);
 });
 
+// const checkboxesContainer = document.querySelector('#musicGenres');
+// // populates the modal with each genre
+// musicGenres.forEach(genre => {
+//   const checkbox = document.createElement('input');
+//   checkbox.type = 'checkbox';
+//   checkbox.value = genre;
+//   checkbox.id = genre;
+
+//   const label = document.createElement('label');
+//   label.htmlFor = genre;
+//   label.innerHTML = genre;
+
+//   checkboxesContainer.appendChild(checkbox);
+//   checkboxesContainer.appendChild(label);
+// });
 
 
-$(function () {
-  $("#vSlider").slider();
-});
-
-$(function () {
-  $("#tSlider").slider();
-});
 
 /*
 It is not possible to do a reverse DNS from a browser yet.
