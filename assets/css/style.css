@@ -14,4 +14,13 @@
     font-style: italic;
     padding: 25px; 
     font-size: 35px;
-} */
+*/
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#audio{
+    width: 50%;
+}
