@@ -7,9 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- JqueryUi stylesheet -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <!-- Flowbite stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css" rel="stylesheet" />
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="./assets/css/style.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css" rel="stylesheet" />
   <title>TuneIn</title>
 </head>
 
@@ -36,14 +37,6 @@
 
   <!-- Header container -->
   <header class='columns-2'>
-    <!-- Project Name: TuneIn -->
-    <!-- <h1 id='projectName'>TuneIn</h1> -->
-    <!-- Song Title: column 1 -->
-    <!-- <h2 id='songTitle' class='w-full'>Song title</h2> -->
-
-
-
-
     <!-- Navbar: -->
     <nav>
       <div class="container flex flex-wrap items-center justify-between mx-auto">
@@ -100,47 +93,22 @@
           </ul>
         </div>
     </nav>
-
-
-
-
-
-
-
-
-
   </header>
   <!-- Main container -->
-  <main class='columns-2'>
-    <!-- Artist: column 1-->
-    <div id="artist">
-      <!-- Artist name -->
-      <h2 id="artistName"></h2>
-      <!-- Artist img and bio -->
-      <div id="artistInfo">
-        <!-- <img> <p> -->
-      </div>
-    </div>
-    <!-- Song lyrics: column 2 -->
-    <div id="lyrics"></div>
+  <main class='flex justify-center'>
+    <label id='clock' class='text-5xl'></label>
   </main>
   <!-- Footer container -->
-  <footer class='columns-3'>
-    <!-- Volume slider: column 1 -->
-    <div id="vSlider"></div>
-    <!-- Media buttons: column 2 -->
-    <audio controls type='audio/mpeg' id='audio' class='columns-5'>
-      <!--<source id='audio' > -->
-      <!-- <button id='shuffleBtn'></button>
-      <button id='seekBackBtn'></button>
-      <button id='playBtn'></button>
-      <button id='seekFwdBtn'></button>
-      <button id='loopBtn'></button> -->
+  <footer class='flex justify-center'>
+    <button id='ranBtn' class="bg-stone-500 hover:bg-stone-700 text-white font-bold py-2 px-4 rounded">
+      Random
+    </button>
+    <!-- Media buttons -->
+    <audio autoplay controls muted id='audio' type='audio/mpeg' class="fill-blue-500" data-state="hidden">
     </audio>
-
-    <!-- Track slider: column 3 -->
-    <div id="tSlider"></div>
   </footer>
+  <!-- Dayjs script -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <!-- Tailwind script -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Jquery script -->
