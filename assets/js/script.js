@@ -400,7 +400,7 @@ function radio(url) {
     .then(data => {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0) {
+      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
         $('#audio').attr('src', data[ranRadio].url)
         console.log('radio obj:', data[ranRadio])
         console.log('homepage:', data[ranRadio].homepage)
@@ -477,7 +477,7 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  // (radio(url));
+  radio(url);
   fetchRadioStations();
 });
 
@@ -485,11 +485,5 @@ setInterval(function () {
   $('#clock').text(dayjs().format('hh:mm:ss a'))
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
-
-// adds click function on randomBtn
-// Generates a random radio station
-$("#randomBtn").click(function () {
-  radio(url);
-});
 
 billboard();
