@@ -334,6 +334,7 @@ const fetchRadioStations = () => {
 
 
 
+
 /*
 It is not possible to do a reverse DNS from a browser yet.
 The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
@@ -477,8 +478,8 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  // (radio(url));
-  fetchRadioStations();
+  (radio(url));
+  // fetchRadioStations();
 });
 
 setInterval(function () {
