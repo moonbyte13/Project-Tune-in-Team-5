@@ -290,13 +290,12 @@ window.onload = function () {
     checkboxesContainer.appendChild(label);
   });
   modal.style.display = "block";
-
 }
 
 // close the modal
 const closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
-modal.style.display = "none";
+  modal.style.display = "none";
 });
 
 
@@ -365,11 +364,16 @@ function radioTest(url) {
     .then(response => response.json())
     .then(data => {
       let ranRadio = randomNum(data.length)
+      let selectedRadio = data[ranRadio];
+      if (selectedRadio.ssl_error === 0) {
       $('#audio').attr('src', data[ranRadio].url)
       console.log('radio obj:', data[ranRadio])
       console.log('homepage:', data[ranRadio].homepage)
+      } else {
+        console.log(`Radio Station "${selectedRadio.name} is offline"`);
+      }
     })
-}
+} // radioTest(url)
 
 function billboard() {
   let day = now.format('DD')
