@@ -262,34 +262,42 @@ const countries = [
   { code: 'ZW', name: 'Zimbabwe' },
   { code: 'AX', name: 'Åland Islands' }
 ]
+window.onload = function () {
+  // Modal Creation 
+  const modal = document.getElementById('modal');
+  const select = document.getElementById("countrySelect");
+  // populates the modal with each country
+  countries.forEach(country => {
+    const option = document.createElement("option");
+    option.value = country.code;
+    option.text = country.name;
+    select.appendChild(option);
+  });
 
-// Modal Creation 
-const modal = document.getElementById('modal');
-const select = document.getElementById("countrySelect");
-// populates the modal with each country
-countries.forEach(country => {
-  const option = document.createElement("option");
-  option.value = country.code;
-  option.text = country.name;
-  select.appendChild(option);
+  const checkboxesContainer = document.querySelector('#musicGenres');
+  // populates the modal with each genre
+  musicGenres.forEach(genre => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = genre;
+    checkbox.id = genre;
+
+    const label = document.createElement('label');
+    label.htmlFor = genre;
+    label.innerHTML = genre;
+
+    checkboxesContainer.appendChild(checkbox);
+    checkboxesContainer.appendChild(label);
+  });
+  modal.style.display = "block";
+
+}
+
+// close the modal
+const closeBtn = document.getElementById("closeBtn");
+closeBtn.addEventListener("click", function () {
+modal.style.display = "none";
 });
-
-// const checkboxesContainer = document.querySelector('#musicGenres');
-// // populates the modal with each genre
-// musicGenres.forEach(genre => {
-//   const checkbox = document.createElement('input');
-//   checkbox.type = 'checkbox';
-//   checkbox.value = genre;
-//   checkbox.id = genre;
-
-//   const label = document.createElement('label');
-//   label.htmlFor = genre;
-//   label.innerHTML = genre;
-
-//   checkboxesContainer.appendChild(checkbox);
-//   checkboxesContainer.appendChild(label);
-// });
-
 
 
 /*
@@ -303,20 +311,20 @@ So we have to fallback to ask a single server for a list.
  * Ask a specified server for a list of all other server.
  */
 function get_radiobrowser_base_urls() {
-  return new Promise((resolve, reject)=>{
-      var request = new XMLHttpRequest()
-      // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
-      request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
-      request.onload = function() {
-          if (request.status >= 200 && request.status < 300){
-              var items = JSON.parse(request.responseText).map(x=>"https://" + x.name);
-              console.log('server list:', items)
-              resolve(items);
-          }else{
-              reject(request.statusText);
-          }
+  return new Promise((resolve, reject) => {
+    var request = new XMLHttpRequest()
+    // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
+    request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 300) {
+        var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
+        console.log('server list:', items)
+        resolve(items);
+      } else {
+        reject(request.statusText);
       }
-      request.send();
+    }
+    request.send();
   });
 }
 
@@ -354,13 +362,13 @@ function radioTest(url) {
   fetch(url, {
     method: 'GET',
   })
-  .then(response => response.json())
-  .then(data => {
-    let ranRadio = randomNum(data.length)
-    $('#audio').attr('src', data[ranRadio].url)
-    console.log('radio obj:', data[ranRadio])
-    console.log('homepage:', data[ranRadio].homepage)
-  })
+    .then(response => response.json())
+    .then(data => {
+      let ranRadio = randomNum(data.length)
+      $('#audio').attr('src', data[ranRadio].url)
+      console.log('radio obj:', data[ranRadio])
+      console.log('homepage:', data[ranRadio].homepage)
+    })
 }
 
 function billboard() {
@@ -398,21 +406,21 @@ function randomNum(length) {
   return Math.floor(Math.random() * length)
 }
 
-get_radiobrowser_base_url_random().then((x)=>{
-  console.log("server selected:",x);
+get_radiobrowser_base_url_random().then((x) => {
+  console.log("server selected:", x);
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
   url = `${x}/json/stations/bylanguage/english`
   radioTest(url);
   return get_radiobrowser_server_config(x);
-}).then(config=>{
+}).then(config => {
   console.log("config:", config);
 });
 
 
 // adds click function on randomBtn
 // Generates a random radio station
-$("#ranBtn").click(function() {
+$("#ranBtn").click(function () {
   (radioTest(url));
 });
 

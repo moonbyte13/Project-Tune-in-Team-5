@@ -16,8 +16,10 @@
     font-size: 35px;
 } */
 
-div#modal {
-    font-family: "Comic Sans MS";
+#modal-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 input[type="checkbox"] {
