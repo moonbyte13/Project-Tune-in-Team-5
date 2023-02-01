@@ -29,22 +29,32 @@ input[type="checkbox"] {
     border: 1px solid gray;
     border-radius: 5px;
     margin-right: 10px;
-  }
-  
-  input[type="checkbox"]:checked:before {
+}
+
+input[type="checkbox"]:checked:before {
     font-family: FontAwesome;
     content: "\f00c";
     color: green;
-  }
-  
-  label {
+}
+
+label {
     font-size: 14px;
     cursor: pointer;
-  }
+}
 
 footer{
     position: fixed;
     bottom: 0;
+    width: 100%;
+}
+
+#billboard{
+
+    float: right;
+    width: 40%;
+}
+
+#leftCon{
     width: 100%;
 }
 
