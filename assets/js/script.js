@@ -1,5 +1,6 @@
 let languageSelected,
-url
+url,
+billboardList
 
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
@@ -359,9 +360,39 @@ function radioTest(url) {
     $('#audio').attr('src', data[ranRadio].url)
     console.log('radio obj:', data[ranRadio])
     console.log('homepage:', data[ranRadio].homepage)
-    billboardGet()
   })
 }
+
+function billboard() {
+  let day = now.format('DD')
+  let month = now.format('MM')
+  let year = now.format('YYYY')
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-10`
+
+  fetch(billUrl, {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
+      'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Billboard:', data)
+      billboardList = data
+      for(let i=0; i<billboardList.length; i++){
+        $('#billboard').append(
+          `<li>${billboardList[i].rank}. 
+            ${billboardList[i].artist} | 
+            Song: ${billboardList[i].title}
+          </li>`
+        )
+        console.log(i)
+      }
+    })
+    .catch(err => console.error(err));
+}
+
 
 function randomNum(length) {
   return Math.floor(Math.random() * length)
@@ -395,3 +426,5 @@ setInterval(function () {
 $("#randomBtn").click(function () {
   radioTest(url);
 });
+
+billboard()
