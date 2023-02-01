@@ -375,7 +375,7 @@ function billboard() {
   let day = now.format('DD')
   let month = now.format('MM')
   let year = now.format('YYYY')
-  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-10`
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-100`
 
   fetch(billUrl, {
     method: 'GET',
