@@ -1,15 +1,15 @@
 let languageSelected,
 url,
-billboardList
+billboardList,
+genreUrl
+
+let radioData
 
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
 dayjs.locale(locale, null, true); // load locale for later use
 
 let now = dayjs()
-
-
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
 
 const countries = [
   { code: 'AF', name: 'Afghanistan' },
@@ -281,6 +281,7 @@ window.onload = function () {
     checkbox.type = 'checkbox';
     checkbox.value = genre;
     checkbox.id = genre;
+    checkbox.addEventListener('change', updateSelectedGenres);
 
     const label = document.createElement('label');
     label.htmlFor = genre;
@@ -295,8 +296,43 @@ window.onload = function () {
 // close the modal
 const closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
+  console.log("Fetching radio station by filters");
+  fetchRadioStations();
   modal.style.display = "none";
+  console.log(selectedGenres);
 });
+
+// updating radio stations based on genre
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
+
+let selectedGenres = [];
+
+const updateSelectedGenres = (event) => {
+  if (event.target.checked) {
+    selectedGenres.push(event.target.value);
+  } else {
+    selectedGenres = selectedGenres.filter(genre => genre !== event.target.value);
+  }
+};
+  // url = `${x}/json/stations/bytag/${blues}`
+const fetchRadioStations = () => {
+  const genreFilters = selectedGenres.join('/');
+  let toLowerCaseGenreFilters = genreFilters.toLowerCase();
+  genreUrl = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
+  console.log("logging url of fetch", url);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      console.log("fetching by genres", data);
+      const radioStations = data.filter(station => {
+        return selectedGenres.some(genre => new RegExp(genre, 'i').test(station.tags));
+      });
+      console.log("filtered radio stations", radioStations);
+      console.log("selected genres", selectedGenres);
+    });
+};
+
+
 
 
 /*
@@ -357,7 +393,7 @@ function get_radiobrowser_base_url_random() {
   });
 }
 
-function radioTest(url) {
+function radio(url) {
   fetch(url, {
     method: 'GET',
   })
@@ -365,26 +401,29 @@ function radioTest(url) {
     .then(data => {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0) {
-      $('#audio').attr('src', data[ranRadio].url)
-      console.log('radio obj:', data[ranRadio])
-      console.log('homepage:', data[ranRadio].homepage)
+      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
+        $('#audio').attr('src', data[ranRadio].url)
+        console.log('radio obj:', data[ranRadio])
+        console.log('homepage:', data[ranRadio].homepage)
+        radioData = data[ranRadio]
+        console.log(radioData)
+        displayRadioInfo()
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
       }
     })
-} // radioTest(url)
+}
 
 function billboard() {
   let day = now.format('DD')
   let month = now.format('MM')
   let year = now.format('YYYY')
-  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-10`
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-100`
 
   fetch(billUrl, {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'e38a14ccd5msh6cb4c6bd7fabc47p1aef3cjsnc0d3a7e8fa6d',
+      'X-RapidAPI-Key': 'c940ff86e8msh1858db2844899cap1b62d9jsn957e8cb7460b',
       'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
     }
   })
@@ -394,7 +433,8 @@ function billboard() {
       billboardList = data
       for(let i=0; i<billboardList.length; i++){
         $('#billboard').append(
-          `<li>${billboardList[i].rank}. 
+          `<li>
+            ${billboardList[i].rank}. 
             ${billboardList[i].artist} | 
             Song: ${billboardList[i].title}
           </li>`
@@ -406,16 +446,29 @@ function billboard() {
 }
 
 
+function displayRadioInfo() {
+  $('#radioInfo').html(
+    `<img src='${radioData.favicon}' style='width: 25%'></img>
+    <li>${radioData.name}</li>
+    <li>${radioData.country}</li>
+    <li>Language: ${radioData.language}</li>
+    <li>Tags: "${radioData.tags}"</li>
+    <li>Votes: ${radioData.votes}</li>`
+  )
+}
+
 function randomNum(length) {
-  return Math.floor(Math.random() * length)
+  return Math.floor(Math.random() * length);
 }
 
 get_radiobrowser_base_url_random().then((x) => {
   console.log("server selected:", x);
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
+  // url = `${x}/json/stations/bytag/${blues}`
+
   url = `${x}/json/stations/bylanguage/english`
-  radioTest(url);
+  radio(url);
   return get_radiobrowser_server_config(x);
 }).then(config => {
   console.log("config:", config);
@@ -425,7 +478,7 @@ get_radiobrowser_base_url_random().then((x) => {
 // adds click function on randomBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  (radioTest(url));
+  radio(url);
 });
 
 setInterval(function () {
@@ -433,10 +486,4 @@ setInterval(function () {
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
 
-// adds click function on randomBtn
-// Generates a random radio station
-$("#randomBtn").click(function () {
-  radioTest(url);
-});
-
-billboard()
+billboard();
