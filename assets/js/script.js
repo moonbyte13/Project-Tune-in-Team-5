@@ -1,6 +1,7 @@
 let languageSelected,
 url,
-billboardList
+billboardList,
+genreUrl
 
 let radioData
 
@@ -317,7 +318,7 @@ const updateSelectedGenres = (event) => {
 const fetchRadioStations = () => {
   const genreFilters = selectedGenres.join('/');
   let toLowerCaseGenreFilters = genreFilters.toLowerCase();
-  url = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
+  genreUrl = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
   console.log("logging url of fetch", url);
   fetch(url)
     .then(response => response.json())
@@ -478,7 +479,6 @@ get_radiobrowser_base_url_random().then((x) => {
 // Generates a random radio station
 $("#ranBtn").click(function () {
   radio(url);
-  fetchRadioStations();
 });
 
 setInterval(function () {
