@@ -136,3 +136,25 @@ footer{
     text-align: center;
     
  }
+
+ /* #leftCon{ 
+    margin-left: 40%;
+ } */
+
+ #radioInfo{
+    text-align: center;
+    margin-top: 40%;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-weight: bold;
+    font-style: italic;
+    display:grid;
+    align-items: center;
+    justify-content: center ;
+
+ }
+
+ /* img.radioPic{
+    justify-content: center;
+    align-items: center;
+ } */
