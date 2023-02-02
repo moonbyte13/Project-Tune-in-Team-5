@@ -6,14 +6,20 @@ genreUrl,
 selectedCountry,
 radioData
 
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
+let selectedGenres = [];
+// constant variables
+const closeBtn = document.querySelector("closeBtn");
+const checkboxesContainer = document.querySelector('#musicGenres');
+// Modal
+const modal = document.getElementById('modal');
+const select = document.getElementById("countrySelect");
 
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
 dayjs.locale(locale, null, true); // load locale for later use
 const now = dayjs()
 
-
+// countries array
 const countries = [
 { code: 'AF', name: 'Afghanistan' },
 { code: 'AL', name: 'Albania' },
@@ -265,179 +271,176 @@ const countries = [
 { code: 'ZW', name: 'Zimbabwe' },
 { code: 'AX', name: 'Åland Islands' }
 ]
+// music genres array
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
 
-// Modal Creation 
-const modal = document.getElementById('modal');
-const select = document.getElementById("countrySelect");
-
-// station names arr for autocomplete
-let stationNames = []
-
-// updating radio stations based on genre
-let selectedGenres = [];
-
-const updateSelectedGenres = (event) => {
-  let genre = event.target;
-  if (genre.checked) {
-    selectedGenres.push(genre.value);
-    selectedGenres.push(genre.value.replace("-", ""));
-    selectedGenres.push(genre.value.replace("-", " "));
-    selectedGenres.push(genre.value.replace("&", "n"));
-  } else {
-    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value);
-    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", ""));
-    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " "));
-    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("&", "n"));
-  }
-};
-
-const createUrls = () => {
-  const genreUrls = [...new Set(selectedGenres)].map(genre => {
-    return `http://at1.api.radio-browser.info/json/stations/bytag/${(genre.toLowerCase())}`;
-  });
-  return genreUrls;
-};
-
-// populates the modal with each genre
-const checkboxesContainer = document.querySelector('#musicGenres');
-musicGenres.forEach(genre => {
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.value = genre;
-  checkbox.id = genre;
-  checkbox.addEventListener('change', updateSelectedGenres);
-
-  const label = document.createElement('label');
-  label.htmlFor = genre;
-  label.innerHTML = genre;
-
-  checkboxesContainer.appendChild(checkbox);
-  checkboxesContainer.appendChild(label);
-});
-modal.style.display = "block";
-
-// close the modal
-const closeBtn = document.getElementById("closeBtn");
-closeBtn.addEventListener("click", function () {
-  console.log("Fetching radio station by filters");
-  // fetchRadioStations();
-  modal.style.display = "none";
-  console.log(selectedGenres);
-  // stationsFetch();
-});
-
-// fetching radio station based on genres
-let fetchRadioStations = () => {
-  let genreUrls = createUrls();
-  let randomUrl = genreUrls[Math.floor(Math.random() * genreUrls.length)];
-  radio(randomUrl);
-
-};
-
-// populates the modal with each country
-countries.forEach(country => {
-  const option = document.createElement("option");
-  option.value = country.code;
-  option.text = country.name;
-  select.appendChild(option);
-});
-
-// find out which country is selected and play the radio
-select.addEventListener("change", function () {
-  const selectedValue = this.value;
-  if (selectedValue) {
-    const selectedCountry = countries.find(country => country.code === selectedValue);
-    console.log("Selected country: ", selectedCountry);
-    // Make API call with selected country
-    let countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(selectedCountry.name.toLowerCase())}`;
-    console.log(countryUrl);
-    console.log("Playing based on country: ", radio(countryUrl));
-  }
-});
-
-const createCountryUrls = () => {
-  
-};
-/*
-It is not possible to do a reverse DNS from a browser yet.
-The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
-to one of the providers out there. (google, quad9,...)
-So we have to fallback to ask a single server for a list.
-*/
-
-/**
- * Ask a specified server for a list of all other server.
- */
-function get_radiobrowser_base_urls() {
-  return new Promise((resolve, reject) => {
-    var request = new XMLHttpRequest()
-    // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
-    request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
-    request.onload = function () {
-      if (request.status >= 200 && request.status < 300) {
-        var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
-        console.log('server list:', items);
-        resolve(items);
-      } else {
-        reject(request.statusText);
-      }
+// window onload
+window.onload = function () {
+  modal()
+  // Modal function
+  function modal() {
+    // populates the modal with each country
+    countries.forEach(country => {
+      const option = document.createElement("option");
+      option.value = country.code;
+      option.text = country.name;
+      select.appendChild(option);
+    });
+    select.onchange = (ev) =>{
+    console.log("Selected country is: " + select.value);
+    selectedCountry = select.value
     }
-    request.send();
-  });
-}
-
-// Ask a server for its settings.
-function get_radiobrowser_server_config(baseurl) {
-  return new Promise((resolve, reject) => {
-    var request = new XMLHttpRequest()
-    request.open('GET', baseurl + '/json/config', true);
-    request.onload = function () {
-      if (request.status >= 200 && request.status < 300) {
-        var items = JSON.parse(request.responseText);
-        resolve(items);
-      } else {
-        reject(request.statusText);
-      }
-    }
-    request.send();
-  });
-}
-
-/*
-Get a random available radio-browser server.
-Returns: string - base url for radio-browser api
-*/
-function get_radiobrowser_base_url_random() {
-  return get_radiobrowser_base_urls().then(hosts => {
-    var item = hosts[Math.floor(Math.random() * hosts.length)];
-    console.log(item);
-    return item;
-  });
-}
-
-
-
-function radio(url) {
-  fetch(url, {
-    method: 'GET',
-  })
-    .then(response => response.json())
-    .then(data => {
-      let ranRadio = randomNum(data.length);
-      let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
-        $('#audio').attr('src', data[ranRadio].url)
-        console.log('radio obj:', data[ranRadio]);
-        console.log('homepage:', data[ranRadio].homepage);
-        radioData = data[ranRadio];
-        displayRadioInfo();
-      } else {
-        console.log(`Radio Station "${selectedRadio.name} is offline"`);
-        radio(url);
-      }
+    // populates the modal with each genre
+    musicGenres.forEach(genre => {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = genre;
+      checkbox.id = genre;
+      checkbox.addEventListener('change', updateSelectedGenres);
     })
-}
+    // populates the modal with each genre
+    musicGenres.forEach(genre => {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = genre;
+      checkbox.id = genre;
+      checkbox.addEventListener('change', updateSelectedGenres);
 
+      const label = document.createElement('label');
+      label.htmlFor = genre;
+      label.innerHTML = genre;
+
+      checkboxesContainer.appendChild(checkbox);
+      checkboxesContainer.appendChild(label);
+    });
+    modal.style.display = "block";
+  }
+
+  // close the modal
+  closeBtn.addEventListener("click", function () {
+    console.log("Fetching radio station by filters");
+    fetchRadioStations();
+    modal.style.display = "none";
+    console.log(selectedGenres);
+  })
+
+  // random number function
+  function randomNum(length) {
+    return Math.floor(Math.random() * length);
+  }
+
+  // update selected genres based on checkboxes selected
+  const updateSelectedGenres = (event) => {
+    let genre = event.target;
+    if (genre.checked) {
+      selectedGenres.push(genre.value);
+      selectedGenres.push(genre.value.replace("-", ""));
+      selectedGenres.push(genre.value.replace("-", " "));
+      selectedGenres.push(genre.value.replace("&", "n"));
+      } else {
+      selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value);
+      selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", ""));
+      selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " "));
+      selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("&", "n"));
+    }
+  }
+  const createUrls = () => {
+    const genreUrls = [...new Set(selectedGenres)].map(genre => {
+      return `http://at1.api.radio-browser.info/json/stations/bytag/${(genre.toLowerCase())}`;
+    });
+    return genreUrls;
+  }
+  
+  // call this function then get config
+  get_radiobrowser_base_url_random().then((x) => {
+    url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
+    // let url = `${x}/json/stations/bylanguage/${languageSelected}`
+    // url = `${x}/json/tags`
+    // url = `${x}/json/stations/bytag/${blues}`
+    radio(url);
+    return get_radiobrowser_server_config(x);
+    }).then(config => {
+    console.log("config:", config);
+    });
+  /*
+  It is not possible to do a reverse DNS from a browser yet.
+  The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
+  to one of the providers out there. (google, quad9,...)
+  So we have to fallback to ask a single server for a list.
+  */
+  // Ask a specified server for a list of all other server.
+  function get_radiobrowser_base_urls() {
+    return new Promise((resolve, reject) => {
+      var request = new XMLHttpRequest()
+      // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
+      request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
+      request.onload = function () {
+        if (request.status >= 200 && request.status < 300) {
+          var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
+          console.log('server list:', items)
+          resolve(items);
+        } else {
+          reject(request.statusText);
+        }
+      }
+      request.send();
+    });
+  }
+
+  // Ask a server for its settings.
+  function get_radiobrowser_server_config(baseurl) {
+    return new Promise((resolve, reject) => {
+      var request = new XMLHttpRequest()
+      request.open('GET', baseurl + '/json/config', true);
+      request.onload = function () {
+        if (request.status >= 200 && request.status < 300) {
+          var items = JSON.parse(request.responseText);
+          resolve(items);
+        } else {
+          reject(request.statusText);
+        }
+      }
+      request.send();
+    });
+  }
+
+  /*
+  Get a random available radio-browser server.
+  Returns: string - base url for radio-browser api
+  */
+  function get_radiobrowser_base_url_random() {
+    return get_radiobrowser_base_urls().then(hosts => {
+      var item = hosts[Math.floor(Math.random() * hosts.length)];
+      return item;
+    });
+  }
+
+  // radio player function
+  function radio(url) {
+    fetch(url, {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(data => {
+        let ranRadio = randomNum(data.length)
+        let selectedRadio = data[ranRadio];
+        if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
+          $('#audio').attr('src', data[ranRadio].url);
+          console.log('radio obj:', data[ranRadio]);
+          console.log('homepage:', data[ranRadio].homepage);
+          radioData = data[ranRadio];
+          console.log(radioData);
+          displayRadioInfo();
+        } else {
+          console.log(`Radio Station "${selectedRadio.name} is offline"`);
+          radio(url)
+        }
+      })
+  }
+
+};
+
+// Billboard function
 function billboard() {
   let day = now.format('DD');
   let month = now.format('MM');
@@ -466,10 +469,10 @@ function billboard() {
         console.log(i);
       }
     })
-    .catch(err => console.error(err));
-}
+    .catch(err => console.error(err))
+};
 
-
+// display radio info function
 function displayRadioInfo() {
   $('#radioInfo').html(
     `<img src='${radioData.favicon}' style='width: 25%'></img>
@@ -478,12 +481,9 @@ function displayRadioInfo() {
     <li>Language: ${radioData.language}</li>
     <li>Tags: "${radioData.tags}"</li>
     <li>Votes: ${radioData.votes}</li>`
-  );
-}
+  )
+};
 
-function randomNum(length) {
-  return Math.floor(Math.random() * length);
-}
 
 // adds click function on ranBtn
 // Generates a random radio station
@@ -493,26 +493,7 @@ $("#ranBtn").click(function () {
   createUrls();
 })
 
-// fetches station names for autoComplete
-// currently crashing, do not call
-function autoCompleteFetch() {
-  stationNames = []
-  fetch(`https://at1.api.radio-browser.info/json/stations`)
-    .then(function(response){
-      return response.json()
-    })
-    .then(function (data) {
-      console.log(`stations input data:`, data);
-      for(radNameNum=0; radNameNum<data.length; radNameNum++){
-        stationNames.push(data[radNameNum].name);
-      }
-      console.log(`stations names arr:`, stationNames);
-      $("#searchText").autocomplete({
-        source: stationNames
-      })
-    })
-};
-
+// clock function
 setInterval(function () {
   $('#clock').text(dayjs().format('hh:mm:ss a'));
   // console.log(dayjs().format('hh:mm:ss a'))
