@@ -280,7 +280,25 @@ window.onload = function () {
   const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
 
   // call modal
-  radioModal()
+  radioModal().then(
+      // url = `${x}/json/stations/bytag/${blues}`
+  const fetchRadioStations = () => {
+    const genreFilters = selectedGenres.join('/');
+    let toLowerCaseGenreFilters = genreFilters.toLowerCase();
+    genreUrl = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
+    console.log("logging url of fetch", url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log("fetching by genres", data);
+        const radioStations = data.filter(station => {
+          return selectedGenres.some(genre => new RegExp(genre, 'i').test(station.tags));
+        });
+        console.log("filtered radio stations", radioStations);
+        console.log("selected genres", selectedGenres);
+      });
+  };
+  )
 
   // Modal function
   function radioModal() {
