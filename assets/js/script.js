@@ -337,6 +337,17 @@ countries.forEach(country => {
   select.appendChild(option);
 });
 
+
+
+
+///When the use clicks the Menu button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+
+
+
 // find out which country is selected and play the radio
 select.addEventListener("change", function () {
   const selectedValue = this.value;
