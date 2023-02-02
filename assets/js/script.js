@@ -372,7 +372,7 @@ function get_radiobrowser_base_urls() {
     request.onload = function () {
       if (request.status >= 200 && request.status < 300) {
         var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
-        console.log('server list:', items)
+        console.log('server list:', items);
         resolve(items);
       } else {
         reject(request.statusText);
@@ -418,15 +418,14 @@ function radio(url) {
   })
     .then(response => response.json())
     .then(data => {
-      let ranRadio = randomNum(data.length)
+      let ranRadio = randomNum(data.length);
       let selectedRadio = data[ranRadio];
       if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
         $('#audio').attr('src', data[ranRadio].url)
-        console.log('radio obj:', data[ranRadio])
-        console.log('homepage:', data[ranRadio].homepage)
-        radioData = data[ranRadio]
-        console.log(radioData)
-        displayRadioInfo()
+        console.log('radio obj:', data[ranRadio]);
+        console.log('homepage:', data[ranRadio].homepage);
+        radioData = data[ranRadio];
+        displayRadioInfo();
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
         radio(url);
@@ -435,10 +434,10 @@ function radio(url) {
 }
 
 function billboard() {
-  let day = now.format('DD')
-  let month = now.format('MM')
-  let year = now.format('YYYY')
-  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-100`
+  let day = now.format('DD');
+  let month = now.format('MM');
+  let year = now.format('YYYY');
+  let billUrl = `https://billboard3.p.rapidapi.com/hot-100?date=${year}-${month}-${day}&range=1-100`;
 
   fetch(billUrl, {
     method: 'GET',
@@ -449,8 +448,8 @@ function billboard() {
   })
     .then(response => response.json())
     .then(data => {
-      console.log('Billboard:', data)
-      billboardList = data
+      console.log('Billboard:', data);
+      billboardList = data;
       for (let i = 0; i < billboardList.length; i++) {
         $('#billboard').append(
           `<li>
@@ -458,8 +457,8 @@ function billboard() {
             ${billboardList[i].artist} | 
             Song: ${billboardList[i].title}
           </li>`
-        )
-        console.log(i)
+        );
+        console.log(i);
       }
     })
     .catch(err => console.error(err));
@@ -474,7 +473,7 @@ function displayRadioInfo() {
     <li>Language: ${radioData.language}</li>
     <li>Tags: "${radioData.tags}"</li>
     <li>Votes: ${radioData.votes}</li>`
-  )
+  );
 }
 
 function randomNum(length) {
@@ -504,7 +503,7 @@ $("#ranBtn").click(function () {
 });
 
 setInterval(function () {
-  $('#clock').text(dayjs().format('hh:mm:ss a'))
+  $('#clock').text(dayjs().format('hh:mm:ss a'));
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
 
