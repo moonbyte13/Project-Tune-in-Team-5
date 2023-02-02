@@ -313,12 +313,12 @@ const updateSelectedGenres = (event) => {
     selectedGenres.push(genre.value);
     selectedGenres.push(genre.value.replace("-", ""));
     selectedGenres.push(genre.value.replace("-", " "));
-    selectedGenres.push(genre.value.replace("&", ""));
+    selectedGenres.push(genre.value.replace("&", "n"));
     } else {
-    selectedGenres = selectedGenres.filter(genre => genre !== genre.value);
-    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("-", ""));
-    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("-", " "));
-    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("&", ""));
+    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value);
+    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", ""));
+    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " "));
+    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("&", "n"));
   }
 };
 
