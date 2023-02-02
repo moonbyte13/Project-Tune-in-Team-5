@@ -3,7 +3,8 @@ let languageSelected,
   billboardList,
   genreUrl
 
-let radioData
+let radioData;
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
 
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
@@ -263,49 +264,12 @@ const countries = [
   { code: 'AX', name: 'Åland Islands' }
 ]
 
-window.onload = function () {
-  // Modal Creation 
-  const modal = document.getElementById('modal');
-  const select = document.getElementById("countrySelect");
-  // populates the modal with each country
-  countries.forEach(country => {
-    const option = document.createElement("option");
-    option.value = country.code;
-    option.text = country.name;
-    select.appendChild(option);
-  });
+// Modal Creation 
+const modal = document.getElementById('modal');
+const select = document.getElementById("countrySelect");
 
-  const checkboxesContainer = document.querySelector('#musicGenres');
-  // populates the modal with each genre
-  musicGenres.forEach(genre => {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = genre;
-    checkbox.id = genre;
-    checkbox.addEventListener('change', updateSelectedGenres);
-
-    const label = document.createElement('label');
-    label.htmlFor = genre;
-    label.innerHTML = genre;
-
-    checkboxesContainer.appendChild(checkbox);
-    checkboxesContainer.appendChild(label);
-  });
-  modal.style.display = "block";
-}
-
-// close the modal
-const closeBtn = document.getElementById("closeBtn");
-closeBtn.addEventListener("click", function () {
-  console.log("Fetching radio station by filters");
-  // fetchRadioStations();
-  modal.style.display = "none";
-  console.log(selectedGenres);
-});
 
 // updating radio stations based on genre
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical'];
-
 let selectedGenres = [];
 
 const updateSelectedGenres = (event) => {
@@ -315,7 +279,7 @@ const updateSelectedGenres = (event) => {
     selectedGenres.push(genre.value.replace("-", ""));
     selectedGenres.push(genre.value.replace("-", " "));
     selectedGenres.push(genre.value.replace("&", "n"));
-    } else {
+  } else {
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value);
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", ""));
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " "));
@@ -329,6 +293,56 @@ const createUrls = () => {
   });
   return genreUrls;
 };
+
+// populates the modal with each genre
+const checkboxesContainer = document.querySelector('#musicGenres');
+musicGenres.forEach(genre => {
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.value = genre;
+  checkbox.id = genre;
+  checkbox.addEventListener('change', updateSelectedGenres);
+
+  const label = document.createElement('label');
+  label.htmlFor = genre;
+  label.innerHTML = genre;
+
+  checkboxesContainer.appendChild(checkbox);
+  checkboxesContainer.appendChild(label);
+});
+modal.style.display = "block";
+
+// close the modal
+const closeBtn = document.getElementById("closeBtn");
+closeBtn.addEventListener("click", function () {
+  console.log("Fetching radio station by filters");
+  // fetchRadioStations();
+  modal.style.display = "none";
+  console.log(selectedGenres);
+});
+
+// fetching radio station based on genres
+let fetchRadioStations = () => {
+  let genreUrls = createUrls();
+  let randomUrl = genreUrls[Math.floor(Math.random() * genreUrls.length)];
+  radio(randomUrl);
+
+};
+
+// populates the modal with each country
+countries.forEach(country => {
+  const option = document.createElement("option");
+  option.value = country.code;
+  option.text = country.name;
+  select.appendChild(option);
+});
+
+// find out which country is selected
+select.addEventListener("change", function () {
+  const selectedValue = this.value;
+  const selectedCountry = countries.find(country => country.code === selectedValue);
+  console.log("Selected country: ", selectedCountry);
+});
 
 
 /*
