@@ -41,6 +41,9 @@ header{
    left: 20%;
 }
 
+#menuButton{
+    margin-top: 7px;
+}
 
 /* header{
     display: flex; 
