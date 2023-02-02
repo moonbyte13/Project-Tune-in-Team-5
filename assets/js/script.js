@@ -1,4 +1,3 @@
-
 // variables
 let languageSelected,
 url,
@@ -271,6 +270,8 @@ const countries = [
 const modal = document.getElementById('modal');
 const select = document.getElementById("countrySelect");
 
+// station names arr for autocomplete
+let stationNames = []
 
 // updating radio stations based on genre
 let selectedGenres = [];
@@ -322,6 +323,7 @@ closeBtn.addEventListener("click", function () {
   // fetchRadioStations();
   modal.style.display = "none";
   console.log(selectedGenres);
+  // stationsFetch();
 });
 
 // fetching radio station based on genres
@@ -356,7 +358,6 @@ select.addEventListener("change", function () {
 const createCountryUrls = () => {
   
 };
-
 /*
 It is not possible to do a reverse DNS from a browser yet.
 The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
@@ -385,33 +386,36 @@ function get_radiobrowser_base_urls() {
   });
 }
 
-  // Ask a server for its settings.
-  function get_radiobrowser_server_config(baseurl) {
-    return new Promise((resolve, reject) => {
-      var request = new XMLHttpRequest()
-      request.open('GET', baseurl + '/json/config', true);
-      request.onload = function () {
-        if (request.status >= 200 && request.status < 300) {
-          var items = JSON.parse(request.responseText);
-          resolve(items);
-        } else {
-          reject(request.statusText);
-        }
+// Ask a server for its settings.
+function get_radiobrowser_server_config(baseurl) {
+  return new Promise((resolve, reject) => {
+    var request = new XMLHttpRequest()
+    request.open('GET', baseurl + '/json/config', true);
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 300) {
+        var items = JSON.parse(request.responseText);
+        resolve(items);
+      } else {
+        reject(request.statusText);
       }
-      request.send();
-    });
-  }
+    }
+    request.send();
+  });
+}
 
-  /*
-  Get a random available radio-browser server.
-  Returns: string - base url for radio-browser api
-  */
-  function get_radiobrowser_base_url_random() {
-    return get_radiobrowser_base_urls().then(hosts => {
-      var item = hosts[Math.floor(Math.random() * hosts.length)];
-      return item;
-    });
-  }
+/*
+Get a random available radio-browser server.
+Returns: string - base url for radio-browser api
+*/
+function get_radiobrowser_base_url_random() {
+  return get_radiobrowser_base_urls().then(hosts => {
+    var item = hosts[Math.floor(Math.random() * hosts.length)];
+    console.log(item);
+    return item;
+  });
+}
+
+
 
 function radio(url) {
   fetch(url, {
@@ -481,13 +485,33 @@ function randomNum(length) {
   return Math.floor(Math.random() * length);
 }
 
-  // adds click function on ranBtn
-  // Generates a random radio station
-  $("#ranBtn").click(function () {
-    radio(url);
-    console.log(createUrls());
-    createUrls();
-  })
+// adds click function on ranBtn
+// Generates a random radio station
+$("#ranBtn").click(function () {
+  radio(url);
+  console.log(createUrls());
+  createUrls();
+})
+
+// fetches station names for autoComplete
+// currently crashing, do not call
+function autoCompleteFetch() {
+  stationNames = []
+  fetch(`https://at1.api.radio-browser.info/json/stations`)
+    .then(function(response){
+      return response.json()
+    })
+    .then(function (data) {
+      console.log(`stations input data:`, data);
+      for(radNameNum=0; radNameNum<data.length; radNameNum++){
+        stationNames.push(data[radNameNum].name);
+      }
+      console.log(`stations names arr:`, stationNames);
+      $("#searchText").autocomplete({
+        source: stationNames
+      })
+    })
+};
 
 setInterval(function () {
   $('#clock').text(dayjs().format('hh:mm:ss a'));
