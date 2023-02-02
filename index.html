@@ -39,14 +39,19 @@
 
   <!-- Header container -->
   <header class='columns-2'>
-    <!-- Navbar: -->
-
-    <nav >
-
+    <div>
       <!-- TuneIn Logo -->
       <a class="items-start">
         <img src="./assets/images/logo3.png" class="h-15 mr-3 sm:h-15" alt="TuneIn Logo" />
       </a>
+    </div>
+
+    <!-- Clock row -->
+    <div class='items-center'>
+      <label id='clock' class='text-3xl text-white'></label>
+    </div>
+    <!-- Navbar: -->
+    <nav >
 
             <!-- Clock row -->
       <!-- <div class='items-center'>
@@ -54,7 +59,7 @@
       </div> -->
 
       <!-- this makes search, and nav bar into a button when on smaller screen  -->
-      <button data-collapse-toggle="navbar-default" type="button" class="items-end rounded-lg md:hidden pt-10"
+      <button data-collapse-toggle="navbar-default" type="button" class="items-end rounded-lg md:hidden pr-4"
         aria-controls="navbar-default" aria-expanded="false">
         <svg class="w-9 h-9" aria-hidden="true" fill="currentColor" viewBox=" 0 0 20 20">
           <!-- this path is used to create the three lines when the screen is smaller to store all of the nav bar items -->
@@ -89,10 +94,7 @@
 
       </div>
 
-      <!-- Clock row -->
-      <div class='items-center'>
-        <label id='clock' class='text-3xl text-white'></label>
-      </div>
+
 
     </nav>
 
