@@ -478,7 +478,6 @@ function billboard() {
     .catch(err => console.error(err));
 }
 
-
 function displayRadioInfo() {
   $('#radioInfo').html(
     `<img src='${radioData.favicon}' style='width: 25%'></img>
@@ -524,12 +523,19 @@ function searchText(val) {
   fetch(searchUrl)
     .then(response => response.json())
     .then(data => {
-      console.log(`limit = 5:`, data);
+      // console.log(`limit = 5:`, data);
       for(let radNameNum=0; radNameNum<data.length; radNameNum++){
         radName.push(data[radNameNum].name)
       }
       $('#searchInput').autocomplete({
         source: radName
+      })
+      $('#searchInput').keydown(function(e){
+        if(e.keyCode == 13){
+          let selectUrl = `http://at1.api.radio-browser.info/json/stations/bynameexact/${$('#searchInput').val()}`
+          // console.log(selectUrl)
+          radio(selectUrl)
+        }
       })
     })
 }
