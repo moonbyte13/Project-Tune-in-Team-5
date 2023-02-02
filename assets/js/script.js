@@ -1,9 +1,9 @@
 let languageSelected,
   url,
   billboardList,
-  genreUrl
+  genreUrl,
+  radioData
 
-let radioData;
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
 
 // Defining day.js locale obj
@@ -495,6 +495,32 @@ get_radiobrowser_base_url_random().then((x) => {
 }).then(config => {
   console.log("config:", config);
 });
+
+/* $('#searchInput').autocomplete({
+  source: 
+}) */
+
+document.addEventListener('keyup', function(){
+  // console.log($('#searchInput').val())
+  searchText($('#searchInput').val())
+})
+
+// gets searchbar text but must input a string value
+function searchText(val) {
+  let searchUrl = `http://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
+  let radName = []
+  fetch(searchUrl)
+    .then(response => response.json())
+    .then(data => {
+      console.log(`limit = 5:`, data);
+      for(let radNameNum=0; radNameNum<data.length; radNameNum++){
+        radName.push(data[radNameNum].name)
+      }
+      $('#searchInput').autocomplete({
+        source: radName
+      })
+    })
+}
 
 
 // adds click function on randomBtn
