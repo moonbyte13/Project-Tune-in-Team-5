@@ -262,6 +262,7 @@ const countries = [
   { code: 'ZW', name: 'Zimbabwe' },
   { code: 'AX', name: 'Åland Islands' }
 ]
+
 window.onload = function () {
   // Modal Creation 
   const modal = document.getElementById('modal');
@@ -303,7 +304,7 @@ closeBtn.addEventListener("click", function () {
 });
 
 // updating radio stations based on genre
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical'];
 
 let selectedGenres = [];
 
@@ -396,7 +397,7 @@ function radio(url) {
     .then(data => {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1) {
+      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
         $('#audio').attr('src', data[ranRadio].url)
         console.log('radio obj:', data[ranRadio])
         console.log('homepage:', data[ranRadio].homepage)
