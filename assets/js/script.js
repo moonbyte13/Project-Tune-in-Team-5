@@ -307,10 +307,10 @@ window.onload = function () {
 // closebtn
 closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
-  // console.log("Fetching radio station by filters");
+  console.log("Fetching radio station by filters");
   // fetchRadioStations();
   modal.style.display = "none";
-  // console.log(selectedGenres);
+  console.log(selectedGenres);
 });
 
 
@@ -389,7 +389,6 @@ updateSelectedGenres = (event) => {
   }
 
 function radio(url) {
-  url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
   fetch(url, {
   method: 'GET',
 })
@@ -457,20 +456,6 @@ function displayRadioInfo() {
 function randomNum(length) {
   return Math.floor(Math.random() * length);
 }
-
-get_radiobrowser_base_url_random().then((x) => {
-  console.log("server selected:", x);
-  // let url = `${x}/json/stations/bylanguage/${languageSelected}`
-  // url = `${x}/json/tags`
-  // url = `${x}/json/stations/bytag/${blues}`
-
-  url = `${x}/json/stations/bylanguage/english`
-  radio(url);
-  return get_radiobrowser_server_config(x);
-}).then(config => {
-  console.log("config:", config);
-});
-
 
   // adds click function on ranBtn
   // Generates a random radio station
