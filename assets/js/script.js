@@ -263,6 +263,13 @@ const countries = [
   { code: 'ZW', name: 'Zimbabwe' },
   { code: 'AX', name: 'Åland Islands' }
 ]
+
+// updating radio stations based on genre
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
+
+let selectedGenres = [];
+
+
 window.onload = function () {
   // Modal Creation 
   const modal = document.getElementById('modal');
@@ -301,22 +308,16 @@ window.onload = function () {
     checkboxesContainer.appendChild(label);
   });
   modal.style.display = "block";
+  // closebtn
+  const closeBtn = document.getElementById("closeBtn");
+  closeBtn.addEventListener("click", function () {
+    // console.log("Fetching radio station by filters");
+    // fetchRadioStations();
+    modal.style.display = "none";
+    // console.log(selectedGenres);
+  });
 }
 
-// closebtn
-const closeBtn = document.getElementById("closeBtn");
-closeBtn.addEventListener("click", function () {
-  // console.log("Fetching radio station by filters");
-  // fetchRadioStations();
-  modal.style.display = "none";
-  // console.log(selectedGenres);
-});
-
-
-// updating radio stations based on genre
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock'];
-
-let selectedGenres = [];
 
 const updateSelectedGenres = (event) => {
   if (event.target.checked) {
@@ -403,25 +404,26 @@ function get_radiobrowser_base_url_random() {
 }
 
 function radio(url) {
+  url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
   fetch(url, {
-    method: 'GET',
-  })
-    .then(response => response.json())
-    .then(data => {
-      let ranRadio = randomNum(data.length)
-      let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
-        $('#audio').attr('src', data[ranRadio].url)
-        console.log('radio obj:', data[ranRadio])
-        console.log('homepage:', data[ranRadio].homepage)
-        radioData = data[ranRadio]
-        console.log(radioData)
-        displayRadioInfo()
-      } else {
-        console.log(`Radio Station "${selectedRadio.name} is offline"`);
+  method: 'GET',
+})
+  .then(response => response.json())
+  .then(data => {
+    let ranRadio = randomNum(data.length)
+    let selectedRadio = data[ranRadio];
+    if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
+      $('#audio').attr('src', data[ranRadio].url)
+      console.log('radio obj:', data[ranRadio])
+      console.log('homepage:', data[ranRadio].homepage)
+      radioData = data[ranRadio]
+      console.log(radioData)
+      displayRadioInfo()
+    } else {
+      console.log(`Radio Station "${selectedRadio.name} is offline"`);
 
-      }
-    })
+    }
+  })
 }
 
 function billboard() {
@@ -472,16 +474,15 @@ function randomNum(length) {
 }
 
 get_radiobrowser_base_url_random().then((x) => {
-  console.log("server selected:", x);
-  // let url = `${x}/json/stations/bylanguage/${languageSelected}`
-  // url = `${x}/json/tags`
-  // url = `${x}/json/stations/bytag/${blues}`
-
-  url = `${x}/json/stations/bylanguage/english`
-  radio(url);
-  return get_radiobrowser_server_config(x);
+console.log("server selected:", x);
+url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
+// let url = `${x}/json/stations/bylanguage/${languageSelected}`
+// url = `${x}/json/tags`
+// url = `${x}/json/stations/bytag/${blues}`
+radio(url);
+return get_radiobrowser_server_config(x);
 }).then(config => {
-  console.log("config:", config);
+console.log("config:", config);
 });
 
 
