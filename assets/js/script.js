@@ -327,6 +327,28 @@ window.onload = function () {
   // random number function
   function randomNum(length) {
     return Math.floor(Math.random() * length);
+
+
+
+///When the use clicks the Menu button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+
+
+
+// find out which country is selected and play the radio
+select.addEventListener("change", function () {
+  const selectedValue = this.value;
+  if (selectedValue) {
+    const selectedCountry = countries.find(country => country.code === selectedValue);
+    console.log("Selected country: ", selectedCountry);
+    // Make API call with selected country
+    let countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(selectedCountry.name.toLowerCase())}`;
+    console.log(countryUrl);
+    console.log("Playing based on country: ", radio(countryUrl));
+
   }
 
   // update selected genres based on checkboxes selected
@@ -450,7 +472,10 @@ function billboard() {
   fetch(billUrl, {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'c940ff86e8msh1858db2844899cap1b62d9jsn957e8cb7460b',
+      // 'X-RapidAPI-Key': 'c940ff86e8msh1858db2844899cap1b62d9jsn957e8cb7460b',
+    
+      // 'X-RapidAPI-Key': '7b8d8cbe25msh2141e2d65f82a1cp13cb0djsncae8c239e96e',
+      // cassieKEY^^^^^
       'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
     }
   })
