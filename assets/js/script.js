@@ -295,20 +295,24 @@ const createUrls = () => {
 };
 
 // populates the modal with each genre
-const checkboxesContainer = document.querySelector('#musicGenres');
+const checkboxesContainer = $('#musicGenres');
 musicGenres.forEach(genre => {
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.value = genre;
-  checkbox.id = genre;
-  checkbox.addEventListener('change', updateSelectedGenres);
+  // const checkbox = document.createElement('input');
+  // checkbox.type = 'checkbox';
+  // checkbox.value = genre;
+  // checkbox.id = genre;
+  // checkbox.addEventListener('change', updateSelectedGenres);
 
-  const label = document.createElement('label');
-  label.htmlFor = genre;
-  label.innerHTML = genre;
+  // const label = document.createElement('label');
+  // label.htmlFor = genre;
+  // label.innerHTML = genre;
 
-  checkboxesContainer.appendChild(checkbox);
-  checkboxesContainer.appendChild(label);
+  // checkboxesContainer.appendChild(checkbox);
+  // checkboxesContainer.appendChild(label);
+  checkboxesContainer.append(`
+  <input type="checkbox" onchange="updateSelectedGenres()" value="${genre}" id="${genre}">
+  <label for="${genre}">${genre}</label>
+  `)
 });
 modal.style.display = "block";
 
@@ -575,6 +579,8 @@ function displayRadioInfo() {
     <li>Tags: "${radioData.tags}"</li>
     <li>Votes: ${radioData.votes}</li>`
   );
+  // This runs the top 100 billboard
+  // billboard();
 }
 
 function randomNum(length) {

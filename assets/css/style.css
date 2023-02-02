@@ -71,7 +71,7 @@ input[type="checkbox"] {
     background-color: white;
     border: 1px solid gray;
     border-radius: 5px;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
 input[type="checkbox"]:checked:before {
@@ -154,7 +154,11 @@ footer{
 
  }
 
- /* img.radioPic{
-    justify-content: center;
-    align-items: center;
- } */
+ #radioInfo img{
+    /* display:flex;
+    justify-content: center; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    
+ }
