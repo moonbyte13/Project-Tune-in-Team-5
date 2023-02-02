@@ -1,7 +1,8 @@
 let languageSelected,
   url,
   billboardList,
-  genreUrl
+  genreUrl,
+  selectedCountry;
 
 let radioData;
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
@@ -101,6 +102,7 @@ const countries = [
   { code: 'JO', name: 'Jordan' },
   { code: 'KZ', name: 'Kazakhstan' },
   { code: 'KE', name: 'Kenya' },
+  { code: 'KR', name: 'The Republic Of Korea' },
   { code: 'KI', name: 'Kiribati' },
   { code: 'KW', name: 'Kuwait' },
   { code: 'KG', name: 'Kyrgyzstan' },
@@ -255,7 +257,6 @@ let fetchRadioStations = () => {
   let genreUrls = createUrls();
   let randomUrl = genreUrls[Math.floor(Math.random() * genreUrls.length)];
   radio(randomUrl);
-
 };
 
 // populates the modal with each country
@@ -269,50 +270,36 @@ countries.forEach(country => {
 let selectedCountries = [];
 select.addEventListener("change", function () {
   let selectedValue = select.value;
-  let selectedCountry = countries.find(country => country.code === selectedValue);
+  selectedCountry = countries.find(country => country.code === selectedValue);
   selectedCountries = []; // clear the array
   selectedCountries.push(selectedCountry);
 });
 
-// on submit check selected genres, and country and make radio call based off user selection(s)
 let submitBtn = document.getElementById("submitBtn")
 submitBtn.addEventListener("click", function () {
   let selectedValue = select.value;
-  if (selectedValue) {
-    let selectedCountry = countries.find(country => country.code === selectedValue);
-    // Get the selected genres
-    let selectedGenres = [];
-    musicGenres.forEach(checkbox => {
-      if (checkbox.checked) {
-        selectedGenres.push(checkbox.valueOf());
-        console.log("Selected genres: ", selectedGenres);
-      }
-    });
-
-    if (selectedCountry && selectedGenres.length > 0) {
-      // Make API call with both country and genres
-      let country = encodeURIComponent(selectedCountry.name.toLowerCase());
-      let genres = selectedGenres.map(encodeURIComponent).join("/");
-      let url = `https://at1.api.radio-browser.info/json/stations/search?name=${genres}&country=${country}`;
-      console.log("Playing based on country and genres: ", radio(url));
-    } else if (selectedCountry) {
-      // Make API call with only country
-      let country = encodeURIComponent(selectedCountry.name.toLowerCase());
-      let countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
-      console.log("Playing based on country: ", radio(countryUrl));
-    } else if (selectedGenres.length > 0) {
-      // Make API call with only genres
-      let genres = selectedGenres.map(encodeURIComponent).join("/");
-      let genreUrl = `https://at1.api.radio-browser.info/json/stations/bytag/${genres}`;
-      console.log("Playing based on genres: ", radio(genreUrl));
+  let selectedCountry = countries.find(country => country.code === selectedValue);
+  musicGenres.forEach(checkbox => {
+    if (checkbox.checked) {
+      selectedGenres.push(checkbox.value);
     }
+  });
+
+  selectedGenres = [...new Set(selectedGenres)];
+  console.log("Selected genres: ", selectedGenres);
+  console.log("selected genres", selectedGenres.length);
+  if (selectedCountry) {
+    const country = encodeURIComponent(selectedCountry.name.toLowerCase());
+    const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
+      console.log("Playing based on country: ", selectedCountry);
+    radio(countryUrl)
+  } else {
+    fetchRadioStations();
   }
   modal.style.display = "none";
 });
 
-const createCountryUrls = () => {
 
-};
 
 /*
 It is not possible to do a reverse DNS from a browser yet.
@@ -486,8 +473,8 @@ function searchText(val) {
 $("#nextBtn").click(function () {
   let selectedValue = select.value;
   if (selectedValue) {
-    let selectedCountry = countries.find(country => country.code === selectedValue);
-    let selectedGenres = [];
+    selectedCountry = countries.find(country => country.code === selectedValue);
+    selectedGenres = [];
 
     // Get the selected genres
     musicGenres.forEach(checkbox => {
