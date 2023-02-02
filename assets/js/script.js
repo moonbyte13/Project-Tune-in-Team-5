@@ -1,7 +1,7 @@
 let languageSelected,
-url,
-billboardList,
-genreUrl
+  url,
+  billboardList,
+  genreUrl
 
 let radioData
 
@@ -297,7 +297,7 @@ window.onload = function () {
 const closeBtn = document.getElementById("closeBtn");
 closeBtn.addEventListener("click", function () {
   console.log("Fetching radio station by filters");
-  fetchRadioStations();
+  // fetchRadioStations();
   modal.style.display = "none";
   console.log(selectedGenres);
 });
@@ -308,32 +308,28 @@ const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk
 let selectedGenres = [];
 
 const updateSelectedGenres = (event) => {
-  if (event.target.checked) {
-    selectedGenres.push(event.target.value);
-  } else {
-    selectedGenres = selectedGenres.filter(genre => genre !== event.target.value);
+  let genre = event.target;
+  if (genre.checked) {
+    selectedGenres.push(genre.value);
+    selectedGenres.push(genre.value.replace("-", ""));
+    selectedGenres.push(genre.value.replace("-", " "));
+    selectedGenres.push(genre.value.replace("&", ""));
+    selectedGenres.push(genre.value.replace("&", "n"));
+    } else {
+    selectedGenres = selectedGenres.filter(genre => genre !== genre.value);
+    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("-", ""));
+    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("-", " "));
+    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("&", ""));
+    selectedGenres = selectedGenres.filter(genre => genre !== genre.value.replace("&", "n"))
   }
 };
-  // url = `${x}/json/stations/bytag/${blues}`
-const fetchRadioStations = () => {
-  const genreFilters = selectedGenres.join('/');
-  let toLowerCaseGenreFilters = genreFilters.toLowerCase();
-  genreUrl = `http://at1.api.radio-browser.info/json/tags/${toLowerCaseGenreFilters}`;
-  console.log("logging url of fetch", url);
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      console.log("fetching by genres", data);
-      const radioStations = data.filter(station => {
-        return selectedGenres.some(genre => new RegExp(genre, 'i').test(station.tags));
-      });
-      console.log("filtered radio stations", radioStations);
-      console.log("selected genres", selectedGenres);
-    });
+
+const createUrls = () => {
+  const genreUrls = [...new Set(selectedGenres)].map(genre => {
+    return `http://at1.api.radio-browser.info/json/stations/bytag/${(genre.toLowerCase())}`;
+  });
+  return genreUrls;
 };
-
-
-
 
 
 /*
@@ -402,7 +398,7 @@ function radio(url) {
     .then(data => {
       let ranRadio = randomNum(data.length)
       let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
+      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1) {
         $('#audio').attr('src', data[ranRadio].url)
         console.log('radio obj:', data[ranRadio])
         console.log('homepage:', data[ranRadio].homepage)
@@ -411,6 +407,7 @@ function radio(url) {
         displayRadioInfo()
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
+        radio(url);
       }
     })
 }
@@ -432,7 +429,7 @@ function billboard() {
     .then(data => {
       console.log('Billboard:', data)
       billboardList = data
-      for(let i=0; i<billboardList.length; i++){
+      for (let i = 0; i < billboardList.length; i++) {
         $('#billboard').append(
           `<li>
             ${billboardList[i].rank}. 
@@ -480,6 +477,8 @@ get_radiobrowser_base_url_random().then((x) => {
 // Generates a random radio station
 $("#ranBtn").click(function () {
   radio(url);
+  console.log(createUrls());
+  createUrls();
 });
 
 setInterval(function () {
