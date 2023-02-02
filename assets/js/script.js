@@ -337,13 +337,22 @@ countries.forEach(country => {
   select.appendChild(option);
 });
 
-// find out which country is selected
+// find out which country is selected and play the radio
 select.addEventListener("change", function () {
   const selectedValue = this.value;
-  const selectedCountry = countries.find(country => country.code === selectedValue);
-  console.log("Selected country: ", selectedCountry);
+  if (selectedValue) {
+    const selectedCountry = countries.find(country => country.code === selectedValue);
+    console.log("Selected country: ", selectedCountry);
+    // Make API call with selected country
+    let countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(selectedCountry.name.toLowerCase())}`;
+    console.log(countryUrl);
+    console.log("Playing based on country: ", radio(countryUrl));
+  }
 });
 
+const createCountryUrls = () => {
+  
+};
 
 /*
 It is not possible to do a reverse DNS from a browser yet.
