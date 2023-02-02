@@ -9,8 +9,9 @@
 
 #modal-backdrop{
     background-color: rgba(3, 89, 174, 0.994)
-    font-style: italic;
+    
 }
+
 #select-aCountry{
     font-size: 22px;
     text-decoration: underline;
