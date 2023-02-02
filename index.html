@@ -39,38 +39,42 @@
 
   <!-- Header container -->
   <header class='columns-2'>
-    <!-- Navbar: -->
-
-    <nav class="container">
-
+    <div>
       <!-- TuneIn Logo -->
       <a class="items-start">
-        <img src="./assets/images/logo2.png" class="h-15 mr-3 sm:h-15" alt="TuneIn Logo" />
+        <img src="./assets/images/logo3.png" class="h-15 mr-3 sm:h-15" alt="TuneIn Logo" />
       </a>
+    </div>
+
+    <!-- Clock row -->
+    <div class='items-center'>
+      <label id='clock' class='text-3xl text-white'></label>
+    </div>
+    <!-- Navbar: -->
+    <nav >
+
+            <!-- Clock row -->
+      <!-- <div class='items-center'>
+        <label id='clock' class='text-4xl text-white'></label>
+      </div> -->
 
       <!-- this makes search, and nav bar into a button when on smaller screen  -->
-      <button data-collapse-toggle="navbar-default" type="button" class="items-end rounded-lg md:hidden pt-10"
+      <button data-collapse-toggle="navbar-default" type="button" class="items-end rounded-lg md:hidden pr-4"
         aria-controls="navbar-default" aria-expanded="false">
         <svg class="w-9 h-9" aria-hidden="true" fill="currentColor" viewBox=" 0 0 20 20">
           <!-- this path is used to create the three lines when the screen is smaller to store all of the nav bar items -->
-          <path fill-rule="evenodd"
+          <path fill-rule="evenodd" fill="white"
             d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
             clip-rule="evenodd"></path>
         </svg>
       </button>
 
-      <!-- Clock row -->
-      <div class=''>
-        <label id='clock' class='text-4xl'></label>
-      </div>
-
       <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-
         <ul
-          class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white">
+          id="search-toggle" class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 ">
 
           <!-- this li input is for the Search Bar -->
-          <li>
+          <li class="searchbar">
             <input type="text" placeholder='Search'
               class='w-full px-7 py-1 text-center inline-flex rounded-lg italic text-grey-200-600/50'>
           </li>
@@ -78,17 +82,19 @@
 
           <!-- Billboard Toggle -->
           <li>
-            <label class="relative inline-flex items-end cursor-pointer">
+            <label id="billboard" class="relative inline-flex items-end cursor-pointer">
               <input type="checkbox" value="" class="sr-only peer" checked>
               <div
-                class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-orange-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-orange-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600">
+                class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
               </div>
-              <span class="ml-3 text-sm font-medium text-gray-900">Billboard</span>
+              <span class="ml-3 text-sm font-medium text-white">Billboard</span>
             </label>
           </li>
         </ul>
 
       </div>
+
+
 
     </nav>
 

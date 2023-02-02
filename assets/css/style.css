@@ -2,10 +2,26 @@
 /* body {
 
 } */
+header{
+    background-color: rgba(16, 16, 16, 0.96);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#billboard{
+   top: 4px;
+}
 
 #navbar-default{
     float:right; 
 }
+
+#clock{
+   left: 20%;
+}
+
 
 /* header{
     display: flex; 
@@ -58,4 +74,12 @@ footer{
 
 #billboard{
     margin-bottom: 75px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .items-end{
+        font-size: 36px;
+        fill: red;
+    }
 }
