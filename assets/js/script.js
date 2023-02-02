@@ -1,9 +1,9 @@
 let languageSelected,
   url,
   billboardList,
-  genreUrl,
-  radioData
+  genreUrl
 
+let radioData;
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
 
 // Defining day.js locale obj
@@ -337,6 +337,17 @@ countries.forEach(country => {
   select.appendChild(option);
 });
 
+
+
+
+///When the use clicks the Menu button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+
+
+
 // find out which country is selected and play the radio
 select.addEventListener("change", function () {
   const selectedValue = this.value;
@@ -496,6 +507,7 @@ get_radiobrowser_base_url_random().then((x) => {
   console.log("config:", config);
 });
 
+
 /* $('#searchInput').autocomplete({
   source: 
 }) */
@@ -523,17 +535,16 @@ function searchText(val) {
 }
 
 
-// adds click function on randomBtn
+// adds click function on ranBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
   radio(url);
   console.log(createUrls());
   createUrls();
-});
+})
 
+// clock function
 setInterval(function () {
   $('#clock').text(dayjs().format('hh:mm:ss a'));
   // console.log(dayjs().format('hh:mm:ss a'))
 }, 1000);
-
-billboard();
