@@ -50,9 +50,6 @@ THEN I will be given a randomized radio station to listen to
 [Jquery](https://jquery.com)<br>
 [JqueryUi](https://jqueryui.com)<br>
 
-## Credits
-<br>
-
 
 ## Licence 🔑
 
