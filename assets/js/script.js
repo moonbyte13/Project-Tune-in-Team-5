@@ -5,7 +5,7 @@ let languageSelected,
   selectedCountry;
 
 let radioData;
-const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'kpop'];
+const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'K-Pop', 'Oldies'];
 
 // Defining day.js locale obj
 const locale = {}; // Your Day.js locale Object.
@@ -275,6 +275,7 @@ select.addEventListener("change", function () {
   selectedCountries.push(selectedCountry);
 });
 
+// on submit of the modal, make a radio call based off user's inputs
 let submitBtn = document.getElementById("submitBtn")
 submitBtn.addEventListener("click", function () {
   let selectedValue = select.value;
@@ -286,8 +287,7 @@ submitBtn.addEventListener("click", function () {
   });
 
   selectedGenres = [...new Set(selectedGenres)];
-  console.log("Selected genres: ", selectedGenres);
-  console.log("selected genres", selectedGenres.length);
+
   if (selectedCountry) {
     const country = encodeURIComponent(selectedCountry.name.toLowerCase());
     const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
@@ -472,35 +472,22 @@ function searchText(val) {
 
 $("#nextBtn").click(function () {
   let selectedValue = select.value;
-  if (selectedValue) {
-    selectedCountry = countries.find(country => country.code === selectedValue);
-    selectedGenres = [];
-
-    // Get the selected genres
-    musicGenres.forEach(checkbox => {
-      if (checkbox.checked) {
-        selectedGenres.push(checkbox.value);
-      }
-    });
-
-    if (selectedCountry && selectedGenres.length > 0) {
-      // Make API call with both country and genres
-      let country = encodeURIComponent(selectedCountry.name.toLowerCase());
-      let genres = selectedGenres.map(encodeURIComponent).join("/");
-      let url = `https://at1.api.radio-browser.info/stations/search?name=${genres}&country=${country}`;
-      radio(url);
-    } else if (selectedCountry) {
-      // Make API call with only country
-      const country = encodeURIComponent(selectedCountry.name.toLowerCase());
-      const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
-      radio(countryUrl);
-    } else if (selectedGenres.length > 0) {
-      // Make API call with only genres
-      fetchRadioStations();
-    } else {
-      // No country or genres selected, make API call to get random station
-      radio("https://at1.api.radio-browser.info/json/stations/random");
+  let selectedCountry = countries.find(country => country.code === selectedValue);
+  musicGenres.forEach(checkbox => {
+    if (checkbox.checked) {
+      selectedGenres.push(checkbox.value);
     }
+  });
+
+  selectedGenres = [...new Set(selectedGenres)];
+
+  if (selectedCountry) {
+    const country = encodeURIComponent(selectedCountry.name.toLowerCase());
+    const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
+      console.log("Playing based on country: ", selectedCountry);
+    radio(countryUrl)
+  } else {
+    fetchRadioStations();
   }
 })
 
@@ -509,19 +496,6 @@ $("#nextBtn").click(function () {
 $("#ranBtn").click(function () {
   radio(url);
 });
-
-// if (selectedCountry && selectedGenres.length > 0) {
-//   // Make API call with both country and genres
-//   let country = encodeURIComponent(selectedCountry.name.toLowerCase());
-//   let genres = selectedGenres.map(encodeURIComponent).join("/");
-//   let url = `https://at1.api.radio-browser.info/json/stations/search?name=${genres}&country=${country}`;
-//   console.log("Playing based on country and genres: ", radio(url));
-// } else if (selectedCountry) {
-//   // Make API call with only country
-//   let country = encodeURIComponent(selectedCountry.name.toLowerCase());
-//   let countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
-//   console.log("Playing based on country: ", radio(countryUrl));
-// } else if (selectedGenres.length > 0) {
 
 // clock function
 setInterval(function () {
