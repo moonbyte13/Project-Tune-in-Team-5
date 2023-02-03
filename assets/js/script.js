@@ -220,7 +220,7 @@ const updateSelectedGenres = (event) => {
 
 const createUrls = () => {
   const genreUrls = [...new Set(selectedGenres)].map(genre => {
-    return `http://at1.api.radio-browser.info/json/stations/bytag/${(genre.toLowerCase())}`;
+    return `https://at1.api.radio-browser.info/json/stations/bytag/${(genre.toLowerCase())}`;
   });
   return genreUrls;
 };
@@ -323,7 +323,6 @@ submitBtn.addEventListener("click", function () {
   modal.style.display = "none";
 });
 
-
 // call this function then get config
 get_radiobrowser_base_url_random().then((x) => {
   url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
@@ -346,7 +345,7 @@ function get_radiobrowser_base_urls() {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest()
     // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
-    request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
+    request.open('GET', 'https://all.api.radio-browser.info/json/servers', true);
     request.onload = function () {
       if (request.status >= 200 && request.status < 300) {
         var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
@@ -481,8 +480,8 @@ get_radiobrowser_base_url_random().then((x) => {
 
 // gets searchbar text but must input a string value
 async function searchText(val) {
-  let tagUrl = `http://at1.api.radio-browser.info/json/stations/bytag/${val}?limit=5`
-  let nameUrl = `http://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
+  let tagUrl = `https://at1.api.radio-browser.info/json/stations/bytag/${val}?limit=5`
+  let nameUrl = `https://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
   let arrOfObj = []
   let autoCompArr = []
 
@@ -515,6 +514,28 @@ async function searchText(val) {
       })
     }
   }
+  
+  $('#searchInput').autocomplete({
+    source: autoCompArr
+  })
+  
+  // Execute a function when the user presses a key on the keyboard
+  $('#searchInput').keydown(function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === 'Enter') {
+      // Cancel the default action, if needed
+      // console.log($('#searchInput').val());
+      event.preventDefault();
+      // Trigger the audio element with a click
+      for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
+        if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
+          let uuidUrl = `https://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
+          console.log(uuidUrl)
+          $('#audio').attr('src', radio(uuidUrl))
+        }
+      }
+    }
+  })
 } // searchText(val)
 
 $("#nextBtn").click(function () {
