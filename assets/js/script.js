@@ -518,7 +518,6 @@ function billboard() {
     .catch(err => console.error(err));
 }
 
-
 function displayRadioInfo() {
   $('#radioInfo').html(
     `<img src='${radioData.favicon}' style='width: 25%'></img>
@@ -554,48 +553,43 @@ get_radiobrowser_base_url_random().then((x) => {
   source: 
 }) */
 
-document.addEventListener('keyup', function () {
-  // console.log($('#searchInput').val())
-  searchText($('#searchInput').val())
-})
-
 // gets searchbar text but must input a string value
-function searchText(val) {
-  let searchUrl = `http://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
-  let radName = []
-  fetch(searchUrl)
-    .then(response => response.json())
-    .then(data => {
-      // console.log(`limit = 5:`, data);
-      for (let radNameNum = 0; radNameNum < data.length; radNameNum++) {
-        radName.push(data[radNameNum].name)
-      }
-      $('#searchInput').autocomplete({
-        source: radName
+async function searchText(val) {
+  let tagUrl = `http://at1.api.radio-browser.info/json/stations/bytag/${val}?limit=5`
+  let nameUrl = `http://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
+  let arrOfObj = []
+  let autoCompArr = []
+
+  // fetch the names and store them in an obj and arr
+  const nameResponse = await fetch(nameUrl);
+  const namesData = await nameResponse.json();
+  // console.log(`name data`, nameData);
+  for(let indexNameNum=0; indexNameNum<namesData.length; indexNameNum++){
+      namesData[indexNameNum].name = namesData[indexNameNum].name.replaceAll('\t', '' && '- 0 N - ', '')
+      // console.log(namesData[indexNameNum]);
+      arrOfObj.push({
+        name: namesData[indexNameNum].name,
+        uuid: namesData[indexNameNum].stationuuid
       })
-    })
+      autoCompArr.push(namesData[indexNameNum].name);
+  }
+  // console.log(`arr of obj:`,arrOfObj)
+
+  // fetch the tags and store them in an obj and arr
+  const tagResponse = await fetch(tagUrl);
+  const tagsData = await tagResponse.json();
+  for(let indexTagNum=0; indexTagNum<tagsData.length; indexTagNum++){
+    // console.log(tagsData[indexTagNum]);
+    let tagss = tagsData[indexTagNum].tags
+    tagsArr = tagss.split(',')
+    if(tagsArr[indexTagNum] !== undefined && tagsArr[indexTagNum !== '']){
+      arrOfObj.push({
+        tag: tagsArr[indexTagNum].name,
+        uuid: tagsData[indexTagNum].stationuuid
+      })
+    }
 }
 
-$("#nextBtn").click(function () {
-  let selectedValue = select.value;
-  let selectedCountry = countries.find(country => country.code === selectedValue);
-  musicGenres.forEach(checkbox => {
-    if (checkbox.checked) {
-      selectedGenres.push(checkbox.value);
-    }
-  });
-
-  selectedGenres = [...new Set(selectedGenres)];
-
-  if (selectedCountry) {
-    const country = encodeURIComponent(selectedCountry.name.toLowerCase());
-    const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
-      console.log("Playing based on country: ", selectedCountry);
-    radio(countryUrl)
-  } else {
-    fetchRadioStations();
-  }
-})
 
 // adds click function on ranBtn
 // Generates a random radio station
@@ -607,4 +601,6 @@ $("#ranBtn").click(function () {
 setInterval(function () {
   $('#clock').text(dayjs().format('hh:mm:ss a'));
   // console.log(dayjs().format('hh:mm:ss a'))
-}, 1000)
+  // console.log($('#searchInput').val())
+  searchText($('#searchInput').val());
+}, 1000);
