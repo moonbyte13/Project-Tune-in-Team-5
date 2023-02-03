@@ -589,6 +589,28 @@ async function searchText(val) {
       })
     }
   }
+  
+  $('#searchInput').autocomplete({
+    source: autoCompArr
+  })
+  
+  // Execute a function when the user presses a key on the keyboard
+  $('#searchInput').keydown(function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === 'Enter') {
+      // Cancel the default action, if needed
+      // console.log($('#searchInput').val());
+      event.preventDefault();
+      // Trigger the audio element with a click
+      for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
+        if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
+          let uuidUrl = `http://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
+          console.log(uuidUrl)
+          $('#audio').attr('src', radio(uuidUrl))
+        }
+      }
+    }
+  })
 } // searchText(val)
 
 // adds click function on ranBtn
