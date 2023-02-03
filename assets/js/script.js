@@ -445,8 +445,9 @@ async function radio(radUrl) {
     console.log(`Radio Station "${selectedRadio.name} is offline"`);
     radio(radUrl)
   }
-  
+
 }
+
 
 function billboard() {
   let day = now.format('DD');
@@ -461,6 +462,7 @@ function billboard() {
 
       // 'X-RapidAPI-Key': '7b8d8cbe25msh2141e2d65f82a1cp13cb0djsncae8c239e96e',
       // cassieKEY^^^^^
+      'X-RapidAPI-Key': 'b2cfb7f329msha6e8a9c24981368p1cd896jsnbf2101598231',
       'X-RapidAPI-Host': 'billboard3.p.rapidapi.com'
     }
   })
@@ -482,6 +484,16 @@ function billboard() {
     .catch(err => console.error(err));
 }
 
+$("#billboard-toggle").on("click", () => {
+    // This runs the top 100 billboard
+    billboard();
+})
+
+
+
+
+
+
 function displayRadioInfo() {
   $('#radioInfo').html(
     `<img src='${radioData.favicon}' style='width: 25%'></img>
@@ -491,8 +503,7 @@ function displayRadioInfo() {
     <li>Tags: "${radioData.tags}"</li>
     <li>Votes: ${radioData.votes}</li>`
   );
-  // This runs the top 100 billboard
-  // billboard();
+
 }
 
 function randomNum(length) {
@@ -539,22 +550,22 @@ async function searchText(val) {
       })
     }
   }
-  
+
   $('#searchInput').autocomplete({
     source: autoCompArr,
     minLength: 0
   })
-  
+
   // Execute a function when the user presses a key on the keyboard
-  $('#searchInput').keydown(function(event) {
+  $('#searchInput').keydown(function (event) {
     // If the user presses the "Enter" key on the keyboard
     if (event.key === 'Enter') {
       // Cancel the default action, if needed
       // console.log($('#searchInput').val());
       event.preventDefault();
       // Trigger the audio element with a click
-      for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
-        if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
+      for (let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++) {
+        if ($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name) {
           let uuidUrl = `https://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
           // console.log(uuidUrl)
           $('#audio').attr('src', radio(uuidUrl))
