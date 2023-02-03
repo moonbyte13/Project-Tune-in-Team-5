@@ -604,7 +604,7 @@ async function searchText(val) {
       // Trigger the audio element with a click
       for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
         if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
-          let uuidUrl = `http://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
+          let uuidUrl = `https://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
           console.log(uuidUrl)
           $('#audio').attr('src', radio(uuidUrl))
         }
