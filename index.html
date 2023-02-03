@@ -101,6 +101,9 @@
       </div>
     </nav>
   </header>
+  
+  
+  
   <!-- Main container -->
   <main class=''>
     <!-- Clock row -->
@@ -112,7 +115,7 @@
       <!-- Left container -->
       <div id='leftCon' class='container'>
         <!-- Current radio info -->
-        <ul id='radioInfo'></ul>
+        <ul id='radioInfo' class="radioPic"></ul>
         <!-- Genres filter -->
         <div id='genreFilter'></div>
       </div>
@@ -142,7 +145,16 @@
     <!-- Media buttons -->
     <audio autoplay controls muted id='audio' type='audio/mpeg' class="fill-blue-500" data-state="hidden">
     </audio>
+    <!-- Next button -->
+    <button id='nextBtn' class="bg-blue-600 hover:bg-stone-700 text-white font-bold py-2 px-4 rounded" onclick="  ">
+      Next  
+    </button>
   </footer>
+
+
+
+
+
   <!-- Dayjs script -->
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <!-- Tailwind script -->
