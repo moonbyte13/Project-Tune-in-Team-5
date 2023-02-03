@@ -3,7 +3,8 @@ let languageSelected,
   billboardList,
   genreUrl,
   selectedCountry,
-  selectedRadio
+  selectedRadio,
+  randomUrlTag
 
 let radioData;
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'K-Pop', 'Oldies'];
@@ -209,12 +210,12 @@ const updateSelectedGenres = (event) => {
   if (genre.checked) {
     selectedGenres.push(genre.value);
     selectedGenres.push(genre.value.replace("-", ""));
-    selectedGenres.push(genre.value.replace("-", " "));
+    /* selectedGenres.push(genre.value.replace("-", " ")) */;
     selectedGenres.push(genre.value.replace("&", "n"));
   } else {
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value);
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", ""));
-    selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " "));
+    /* selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("-", " ")); */
     selectedGenres = selectedGenres.filter(selectedGenre => selectedGenre !== genre.value.replace("&", "n"));
   }
 };
@@ -260,8 +261,8 @@ closeBtn.addEventListener("click", function () {
 // fetching radio station based on genres
 let fetchRadioStations = () => {
   let genreUrls = createUrls();
-  let randomUrl = genreUrls[Math.floor(Math.random() * genreUrls.length)];
-  radio(randomUrl);
+  randomUrlTag = genreUrls[Math.floor(Math.random() * genreUrls.length)];
+  radio(randomUrlTag);
 };
 
 // populates the modal with each country
@@ -321,7 +322,7 @@ submitBtn.addEventListener("click", function () {
 });
 
 // call this function then get config
-get_radiobrowser_base_url_random().then((x) => {
+/* get_radiobrowser_base_url_random().then((x) => {
   // url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
@@ -330,7 +331,7 @@ get_radiobrowser_base_url_random().then((x) => {
   return get_radiobrowser_server_config(x);
 }).then(config => {
   console.log("config:", config);
-});
+}); */
 /*
 It is not possible to do a reverse DNS from a browser yet.
 The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
@@ -338,7 +339,7 @@ to one of the providers out there. (google, quad9,...)
 So we have to fallback to ask a single server for a list.
 */
 // Ask a specified server for a list of all other server.
-function get_radiobrowser_base_urls() {
+/* function get_radiobrowser_base_urls() {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest()
     // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
@@ -354,10 +355,10 @@ function get_radiobrowser_base_urls() {
     }
     request.send();
   });
-}
+} */
 
 // Ask a server for its settings.
-function get_radiobrowser_server_config(baseurl) {
+/* function get_radiobrowser_server_config(baseurl) {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest()
     request.open('GET', baseurl + '/json/config', true);
@@ -371,7 +372,7 @@ function get_radiobrowser_server_config(baseurl) {
     }
     request.send();
   });
-}
+} */
 
 /*
 Get a random available radio-browser server.
@@ -385,13 +386,13 @@ function get_radiobrowser_base_url_random() {
 }
 
 // radio player function
-async function radio(url) {
-  const response = await fetch(url)
+async function radio(radUrl) {
+  const response = await fetch(radUrl)
   const responseData = await response.json()
   let ranRadio = randomNum(responseData.length)
   selectedRadio = responseData[ranRadio];
   console.log('selected radio:', selectedRadio)
-  if (selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
+  if (/* selectedRadio.codec === 'MP3' &&  */selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
     $('#audio').attr('src', responseData[ranRadio].url)
     console.log('radio obj:', responseData[ranRadio]);
     console.log('homepage:', responseData[ranRadio].homepage);
@@ -400,7 +401,7 @@ async function radio(url) {
     displayRadioInfo();
   } else {
     console.log(`Radio Station "${selectedRadio.name} is offline"`);
-    radio(`https://at1.api.radio-browser.info/json/stations`)
+    radio(radUrl)
   }
   
 }
@@ -545,7 +546,7 @@ $("#nextBtn").click(function () {
 // adds click function on ranBtn
 // Generates a random radio station
 $("#ranBtn").click(function () {
-  radio(url);
+  radio('https://at1.api.radio-browser.info/json/stations');
 });
 
 // clock function
