@@ -272,7 +272,7 @@ countries.forEach(country => {
 });
 
 
-  
+
 
 ///When the use clicks the Menu button, open the modal
 function openModal() {
@@ -306,7 +306,7 @@ submitBtn.addEventListener("click", function () {
   if (selectedCountry) {
     const country = encodeURIComponent(selectedCountry.name.toLowerCase());
     const countryUrl = `https://at1.api.radio-browser.info/json/stations/bycountry/${country}`;
-      console.log("Playing based on country: ", selectedCountry);
+    console.log("Playing based on country: ", selectedCountry);
     radio(countryUrl)
   } else {
     fetchRadioStations();
@@ -315,7 +315,7 @@ submitBtn.addEventListener("click", function () {
 });
 
 const createCountryUrls = () => {
-  
+
   // call this function then get config
   get_radiobrowser_base_url_random().then((x) => {
     url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
@@ -324,9 +324,9 @@ const createCountryUrls = () => {
     // url = `${x}/json/stations/bytag/${blues}`
     radio(url);
     return get_radiobrowser_server_config(x);
-    }).then(config => {
+  }).then(config => {
     console.log("config:", config);
-    });
+  });
   /*
   It is not possible to do a reverse DNS from a browser yet.
   The first part (a normal dns resolve) could be done from a browser by doing DOH (DNS over HTTPs)
@@ -564,32 +564,32 @@ async function searchText(val) {
   const nameResponse = await fetch(nameUrl);
   const namesData = await nameResponse.json();
   // console.log(`name data`, nameData);
-  for(let indexNameNum=0; indexNameNum<namesData.length; indexNameNum++){
-      namesData[indexNameNum].name = namesData[indexNameNum].name.replaceAll('\t', '' && '- 0 N - ', '')
-      // console.log(namesData[indexNameNum]);
-      arrOfObj.push({
-        name: namesData[indexNameNum].name,
-        uuid: namesData[indexNameNum].stationuuid
-      })
-      autoCompArr.push(namesData[indexNameNum].name);
+  for (let indexNameNum = 0; indexNameNum < namesData.length; indexNameNum++) {
+    namesData[indexNameNum].name = namesData[indexNameNum].name.replaceAll('\t', '' && '- 0 N - ', '')
+    // console.log(namesData[indexNameNum]);
+    arrOfObj.push({
+      name: namesData[indexNameNum].name,
+      uuid: namesData[indexNameNum].stationuuid
+    })
+    autoCompArr.push(namesData[indexNameNum].name);
   }
   // console.log(`arr of obj:`,arrOfObj)
 
   // fetch the tags and store them in an obj and arr
   const tagResponse = await fetch(tagUrl);
   const tagsData = await tagResponse.json();
-  for(let indexTagNum=0; indexTagNum<tagsData.length; indexTagNum++){
+  for (let indexTagNum = 0; indexTagNum < tagsData.length; indexTagNum++) {
     // console.log(tagsData[indexTagNum]);
     let tagss = tagsData[indexTagNum].tags
     tagsArr = tagss.split(',')
-    if(tagsArr[indexTagNum] !== undefined && tagsArr[indexTagNum !== '']){
+    if (tagsArr[indexTagNum] !== undefined && tagsArr[indexTagNum !== '']) {
       arrOfObj.push({
         tag: tagsArr[indexTagNum].name,
         uuid: tagsData[indexTagNum].stationuuid
       })
     }
-}
-
+  }
+} // searchText(val)
 
 // adds click function on ranBtn
 // Generates a random radio station
