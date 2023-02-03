@@ -2,6 +2,7 @@
 
 ## Description
 <br>
+This Radio Browser is for users looking to search for radio stations based on where they live or the genre of music. This project is built to create an opportunity for users to explore different radio stations. The main goal is to provide an easy efficient radio browser for everyone to use that also includes the top 100 hits.
 
 ## Collaborators
 ```
