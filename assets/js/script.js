@@ -241,7 +241,7 @@ musicGenres.forEach(genre => {
   // checkboxesContainer.appendChild(checkbox);
   // checkboxesContainer.appendChild(label);
   checkboxesContainer.append(`
-  <input type="checkbox" onchange="updateSelectedGenres()" value="${genre}" id="${genre}">
+  <input type="checkbox" onchange="updateSelectedGenres(event)" value="${genre}" id="${genre}">
   <label for="${genre}">${genre}</label>
   `)
 });
