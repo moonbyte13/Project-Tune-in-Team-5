@@ -15,8 +15,8 @@ N/A
 
 ## User Story 📘
 ```
-AS A user with an intrest for new music,
-I WANT to be able to listen to different radio stations based on my favourite genres of music
+AS A user with an interest for new music,
+I WANT to be able to listen to different radio stations based on my favourite genres of music or the country I live in
 SO THAT I can listen to all of the music that I like 
 ```
 <br>
