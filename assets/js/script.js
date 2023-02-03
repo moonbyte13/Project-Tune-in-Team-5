@@ -276,7 +276,8 @@ countries.forEach(country => {
 
 // find out which country is selected and play the radio
 const checkboxes = document.querySelectorAll("input[type='checkbox']");
-select.addEventListener("change", function () {
+select.addEventListener("change", function (event) {
+  event.preventDefault();
   let selectedValue = select.value;
   selectedCountry = countries.find(country => country.code === selectedValue);
   console.log(selectedCountry);
@@ -299,7 +300,8 @@ select.addEventListener("change", function () {
 
 // on submit of the modal, make a radio call based off user's inputs
 let submitBtn = document.getElementById("submitBtn")
-submitBtn.addEventListener("click", function () {
+submitBtn.addEventListener("click", function (event) {
+  event.preventDefault();
   let selectedValue = select.value;
   let selectedCountry = countries.find(country => country.code === selectedValue);
   musicGenres.forEach(checkbox => {
@@ -522,11 +524,12 @@ async function searchText(val) {
   })
 } // searchText(val)
 
-$("#nextBtn").click(function () {
+$("#nextBtn").click(function (event) {
   let selectedValue = select.value;
   let selectedCountry = countries.find(country => country.code === selectedValue);
   musicGenres.forEach(checkbox => {
     if (checkbox.checked) {
+      event.preventDefault();
       selectedGenres.push(checkbox.value);
     }
   });
