@@ -295,8 +295,50 @@ select.addEventListener("change", function (event) {
       checkbox.classList.remove("checkbox-disabled");
     });
   }
+  // Store the selected country to local storage
+  localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
   selectedGenres = [];
 });
+
+// Check if there's a stored selected country in local storage
+let storedSelectedCountry = localStorage.getItem("selectedCountry");
+if (storedSelectedCountry) {
+  selectedCountry = JSON.parse(storedSelectedCountry);
+  // Set the select to the stored country
+  select.value = selectedCountry.code;
+  // Disable all checkboxes if a country is selected
+  if (selectedCountry.code !== "empty") {
+    checkboxes.forEach(checkbox => {
+      checkbox.disabled = true;
+      checkbox.checked = false;
+      checkbox.classList.add("checkbox-disabled");
+    });
+  }
+}
+
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener("change", function () {
+    if (checkbox.checked) {
+      selectedGenres.push(checkbox.value);
+    } else {
+      selectedGenres = selectedGenres.filter(genre => genre !== checkbox.value);
+    }
+    // Store the selected genres to local storage
+    localStorage.setItem("selectedGenres", JSON.stringify(Array.from(new Set(selectedGenres))));
+  });
+});
+
+// Check if there's a stored selected genres in local storage
+let storedSelectedGenres = localStorage.getItem("selectedGenres");
+if (storedSelectedGenres) {
+  selectedGenres = JSON.parse(storedSelectedGenres);
+  // Check the stored selected genres
+  checkboxes.forEach(checkbox => {
+    if (selectedGenres.includes(checkbox.value)) {
+      checkbox.checked = true;
+    }
+  });
+}
 
 // on submit of the modal, make a radio call based off user's inputs
 let submitBtn = document.getElementById("submitBtn")

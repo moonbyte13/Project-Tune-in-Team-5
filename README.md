@@ -2,10 +2,11 @@
 
 ## Description
 <br>
+This Radio Browser is for users looking to search for radio stations based on where they live or the genre of music. This project is built to create an opportunity for users to explore different radio stations. The main goal is to provide an easy efficient radio browser for everyone to use that also includes the top 100 hits.
 
 ## Collaborators
 ```
-Cassandra Watson, Ricky Nguyen and Michael. 
+Cassandra Watson, Ricky Nguyen and Michael Frayne. 
 ```
 
 ## Installation 
@@ -14,8 +15,8 @@ N/A
 
 ## User Story 📘
 ```
-AS A user with an intrest for new music,
-I WANT to be able to listen to different radio stations based on my favourite genres of music
+AS A user with an interest for new music,
+I WANT to be able to listen to different radio stations based on my favourite genres of music or the country I live in
 SO THAT I can listen to all of the music that I like 
 ```
 <br>
@@ -25,9 +26,9 @@ SO THAT I can listen to all of the music that I like
 GIVEN I am using a radio browser to listen to music I enjoy
 
 WHEN I open the radio browser
-THEN I am able to select my favourite genres of music I like and the country that I live in
+THEN I am able to select my favourite genres of music I like OR the country that I live in 
 
-WHEN I select my country and genre of choice and close the modal
+WHEN I select my country OR genre of choice and close the modal
 THEN I will be forwarded to a radio station relevant to my selections
 
 WHEN the billboard toggle is switched on
@@ -36,7 +37,7 @@ THEN I will see the top 100 billboard hits
 WHEN I click a button(random)
 THEN I will be given a randomized radio station to listen to
 
-## ![TuneIn](imageofwebsitehere)
+## ![TuneIn](./assets/images/website.png)
 
 ## Deployment Link 🔗
 [Deployment link](https://xmoonphasex.github.io/Project-Tune-in-Team-5/)<br>
