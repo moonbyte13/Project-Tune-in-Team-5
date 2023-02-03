@@ -271,10 +271,6 @@ countries.forEach(country => {
   select.appendChild(option);
 });
 
-///When the use clicks the Menu button, open the modal
-function openModal() {
-  modal.style.display = "block";
-}
 
 // find out which country is selected and play the radio
 const checkboxes = document.querySelectorAll("input[type='checkbox']");
@@ -405,7 +401,7 @@ function radio(url) {
         displayRadioInfo();
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
-        radio(url)
+        radio(`https://at1.api.radio-browser.info/json/stations?limit=69`)
       }
     })
 }
@@ -461,19 +457,6 @@ function randomNum(length) {
   return Math.floor(Math.random() * length);
 }
 
-get_radiobrowser_base_url_random().then((x) => {
-  console.log("server selected:", x);
-  // let url = `${x}/json/stations/bylanguage/${languageSelected}`
-  // url = `${x}/json/tags`
-  // url = `${x}/json/stations/bytag/${blues}`
-
-  url = `${x}/json/stations/bylanguage/english`
-  // radio(url);
-  return get_radiobrowser_server_config(x);
-}).then(config => {
-  console.log("config:", config);
-});
-
 /* $('#searchInput').autocomplete({
   source: 
 }) */
@@ -516,7 +499,8 @@ async function searchText(val) {
   }
   
   $('#searchInput').autocomplete({
-    source: autoCompArr
+    source: autoCompArr,
+    minLength: 0
   })
   
   // Execute a function when the user presses a key on the keyboard
