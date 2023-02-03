@@ -162,3 +162,8 @@ footer{
     margin-bottom: 10px;
     
  }
+
+ .checkbox-disabled {
+    color: #ddd;
+    cursor: not-allowed;
+ }
