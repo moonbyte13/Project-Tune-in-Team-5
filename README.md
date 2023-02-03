@@ -5,7 +5,7 @@
 
 ## Collaborators
 ```
-Cassandra Watson, Ricky Nguyen and Michael. 
+Cassandra Watson, Ricky Nguyen and Michael Frayne. 
 ```
 
 ## Installation 
