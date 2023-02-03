@@ -389,7 +389,7 @@ const createCountryUrls = () => {
       .then(data => {
         let ranRadio = randomNum(data.length)
         let selectedRadio = data[ranRadio];
-        if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3') {
+        if (selectedRadio.codec === 'MP3') {
           $('#audio').attr('src', data[ranRadio].url);
           console.log('radio obj:', data[ranRadio]);
           console.log('homepage:', data[ranRadio].homepage);
@@ -419,7 +419,7 @@ function get_radiobrowser_base_urls() {
   return new Promise((resolve, reject) => {
     var request = new XMLHttpRequest()
     // If you need https, please use the fixed server fr1.api.radio-browser.info for this request only
-    request.open('GET', 'https://all.api.radio-browser.info/json/servers', true);
+    request.open('GET', 'http://all.api.radio-browser.info/json/servers', true);
     request.onload = function () {
       if (request.status >= 200 && request.status < 300) {
         var items = JSON.parse(request.responseText).map(x => "https://" + x.name);
@@ -471,7 +471,7 @@ function radio(url) {
     .then(data => {
       let ranRadio = randomNum(data.length);
       let selectedRadio = data[ranRadio];
-      if (selectedRadio.ssl_error === 0 && selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
+      if (selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
         $('#audio').attr('src', data[ranRadio].url)
         console.log('radio obj:', data[ranRadio]);
         console.log('homepage:', data[ranRadio].homepage);
