@@ -479,7 +479,7 @@ function radio(url) {
         displayRadioInfo();
       } else {
         console.log(`Radio Station "${selectedRadio.name} is offline"`);
-        radio(url);
+        radio('http://at1.api.radio-browser.info/json/stations/bylanguage/english');
       }
     })
 }
@@ -605,7 +605,7 @@ async function searchText(val) {
       for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
         if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
           let uuidUrl = `http://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
-          console.log(uuidUrl)
+          // console.log(uuidUrl)
           $('#audio').attr('src', radio(uuidUrl))
         }
       }
