@@ -2,7 +2,8 @@ let languageSelected,
   url,
   billboardList,
   genreUrl,
-  selectedCountry;
+  selectedCountry,
+  selectedRadio
 
 let radioData;
 const musicGenres = ['Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop', 'Jazz', 'Metal', 'Pop', 'R&B', 'Rap', 'Reggae', 'Rock', 'Classical', 'K-Pop', 'Oldies'];
@@ -321,11 +322,11 @@ submitBtn.addEventListener("click", function () {
 
 // call this function then get config
 get_radiobrowser_base_url_random().then((x) => {
-  url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
+  // url = `${x}/json/stations/bycountrycodeexact/${selectedCountry}`
   // let url = `${x}/json/stations/bylanguage/${languageSelected}`
   // url = `${x}/json/tags`
   // url = `${x}/json/stations/bytag/${blues}`
-  radio(url);
+  // radio(url);
   return get_radiobrowser_server_config(x);
 }).then(config => {
   console.log("config:", config);
@@ -384,26 +385,24 @@ function get_radiobrowser_base_url_random() {
 }
 
 // radio player function
-function radio(url) {
-  fetch(url, {
-    method: 'GET',
-  })
-    .then(response => response.json())
-    .then(data => {
-      let ranRadio = randomNum(data.length)
-      let selectedRadio = data[ranRadio];
-      if (selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
-        $('#audio').attr('src', data[ranRadio].url)
-        console.log('radio obj:', data[ranRadio]);
-        console.log('homepage:', data[ranRadio].homepage);
-        radioData = data[ranRadio];
-        console.log(radioData);
-        displayRadioInfo();
-      } else {
-        console.log(`Radio Station "${selectedRadio.name} is offline"`);
-        radio(`https://at1.api.radio-browser.info/json/stations?limit=69`)
-      }
-    })
+async function radio(url) {
+  const response = await fetch(url)
+  const responseData = await response.json()
+  let ranRadio = randomNum(responseData.length)
+  selectedRadio = responseData[ranRadio];
+  console.log('selected radio:', selectedRadio)
+  if (selectedRadio.codec === 'MP3' && selectedRadio.lastcheckok === 1 && selectedRadio.url.endsWith('.mp3')) {
+    $('#audio').attr('src', responseData[ranRadio].url)
+    console.log('radio obj:', responseData[ranRadio]);
+    console.log('homepage:', responseData[ranRadio].homepage);
+    radioData = responseData[ranRadio];
+    console.log(radioData);
+    displayRadioInfo();
+  } else {
+    console.log(`Radio Station "${selectedRadio.name} is offline"`);
+    radio(`https://at1.api.radio-browser.info/json/stations`)
+  }
+  
 }
 
 function billboard() {
@@ -514,7 +513,7 @@ async function searchText(val) {
       for(let indexedObj = 0; indexedObj < arrOfObj.length; indexedObj++){
         if($('#searchInput').val() == arrOfObj[indexedObj].tag || $('#searchInput').val() == arrOfObj[indexedObj].name){
           let uuidUrl = `https://at1.api.radio-browser.info/json/stations/byuuid/${arrOfObj[indexedObj].uuid}`
-          console.log(uuidUrl)
+          // console.log(uuidUrl)
           $('#audio').attr('src', radio(uuidUrl))
         }
       }
