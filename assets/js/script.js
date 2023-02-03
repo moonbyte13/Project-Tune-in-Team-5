@@ -555,8 +555,8 @@ get_radiobrowser_base_url_random().then((x) => {
 
 // gets searchbar text but must input a string value
 async function searchText(val) {
-  let tagUrl = `http://at1.api.radio-browser.info/json/stations/bytag/${val}?limit=5`
-  let nameUrl = `http://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
+  let tagUrl = `https://at1.api.radio-browser.info/json/stations/bytag/${val}?limit=5`
+  let nameUrl = `https://at1.api.radio-browser.info/json/stations/byname/${val}?limit=5`
   let arrOfObj = []
   let autoCompArr = []
 
