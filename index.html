@@ -21,16 +21,17 @@
       style="width: 500px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
       <h3 id="select-aCountry" class="text-lg font-medium">Select a Country</h3>
       <select class="mt-4 form-select w-full" id="countrySelect">
-        <option id= "country-dropdown" value="">Please select a country</option>
+        <option id= "country-dropdown">Choose A Country's Radio</option>
         <!-- countries here-->
       </select>
       <form>
-        <h3 id="selectMusicGenres" class="text-lg font-medium">Select Music Genres</h3>
+        <h3 id="selectMusicGenres" class="text-lg font-medium">Select Music Genre(s)</h3>
         <div id="musicGenres">
           <!-- checkboxes here -->
         </div>
       </form>
-
+      <button class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-full"
+        id="submitBtn">Ok</button>
       <button class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-full"
         id="closeBtn">Close</button>
     </div>
@@ -85,9 +86,6 @@
 
           </li>
 
-
-
-
           <!-- Billboard Toggle -->
           <li>
             <label id="billboard-toggle" class="relative inline-flex items-end cursor-pointer">
@@ -128,7 +126,7 @@
         <ol id='billboard' ></ol>
       </div>
 
-
+      
 
     </div>
   </main>
